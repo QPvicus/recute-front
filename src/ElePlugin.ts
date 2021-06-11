@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-09 21:56:30
- * @LastEditTime: 2021-06-10 08:59:40
+ * @LastEditTime: 2021-06-11 18:20:21
  * @Description:
  */
 
@@ -26,6 +26,12 @@ import {
   ElMenuItem,
   ElSubmenu,
   ElMenuItemGroup,
+  ElAvatar,
+  ElSelect,
+  ElOption,
+  ElCascader,
+  ElCarousel,
+  ElCarouselItem,
 } from 'element-plus'
 
 const components = [
@@ -46,6 +52,12 @@ const components = [
   ElMenuItem,
   ElSubmenu,
   ElMenuItemGroup,
+  ElAvatar,
+  ElSelect,
+  ElOption,
+  ElCascader,
+  ElCarousel,
+  ElCarouselItem,
 ]
 const plugins = [ElMessage]
 function RegisterComponent(app: App) {

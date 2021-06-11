@@ -1,0 +1,17 @@
+@import './reset.scss';
+
+.wrapper {
+  width: 1184px;
+  max-width: 1184px;
+  margin: 0 auto;
+}
+
+.margin-auto {
+  margin: 0 auto;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
