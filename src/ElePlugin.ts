@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-09 21:56:30
- * @LastEditTime: 2021-06-11 18:20:21
+ * @LastEditTime: 2021-06-12 18:27:10
  * @Description:
  */
 
@@ -32,6 +32,7 @@ import {
   ElCascader,
   ElCarousel,
   ElCarouselItem,
+  ElDatePicker,
 } from 'element-plus'
 
 const components = [
@@ -58,6 +59,7 @@ const components = [
   ElCascader,
   ElCarousel,
   ElCarouselItem,
+  ElDatePicker,
 ]
 const plugins = [ElMessage]
 function RegisterComponent(app: App) {

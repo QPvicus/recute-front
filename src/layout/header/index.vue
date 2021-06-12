@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 09:02:19
- * @LastEditTime: 2021-06-10 12:48:29
+ * @LastEditTime: 2021-06-12 09:46:51
  * @Description:
 -->
 
@@ -30,6 +30,7 @@
         </el-menu>
       </div>
       <div class="right-header">
+        <p>张大彪</p>
         <el-avatar></el-avatar>
       </div>
     </div>
@@ -84,6 +85,9 @@ $primary-color: #409eff;
   .right-header {
     display: flex;
     align-items: center;
+    p {
+      color: $red;
+    }
   }
 }
 .el-menu-item {

@@ -30,6 +30,26 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Login',
     component: () => import('@/views/login/index.vue'),
   },
+  {
+    path: '/resume',
+    name: 'Resume',
+    component: () => import('@/views/resume/index.vue'),
+  },
+  {
+    path: '/resume/edit',
+    name: 'ResumeEditor',
+    component: () => import('@/views/resume/editor.vue'),
+  },
+  {
+    path: '/test',
+    name: 'Test',
+    component: () => import('@/views/error/test.vue'),
+  },
+  {
+    path: '/:path*',
+    name: 'NotFound',
+    component: () => import('@/views/error/404.vue'),
+  },
 ]
 
 const router = createRouter({

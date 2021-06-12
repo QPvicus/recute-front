@@ -1,0 +1,199 @@
+<!--
+ * @Author: Taylor Swift
+ * @Date: 2021-06-12 12:16:26
+ * @LastEditTime: 2021-06-12 13:51:25
+ * @Description:
+-->
+
+<template>
+  <Header />
+  <div class="resume-page">
+    <div class="banner"></div>
+    <div class="profile-header">
+      <div class="profile-header__left">
+        <h1>我的简历</h1>
+        <p>
+          <i class="el-icon-time"></i>
+          <span>最新时间: 2021-06-12 09:50</span>
+        </p>
+      </div>
+      <div>
+        <el-button
+          size="medium"
+          type="primary"
+          icon="el-icon-edit"
+          round
+          @click="edit"
+        >
+          编辑
+        </el-button>
+      </div>
+    </div>
+    <div class="resume-form">
+      <div class="resumeViewSection">
+        <h2 class="resumeViewSection__title">基本信息</h2>
+
+        <div class="resumeViewForm">
+          <div class="resumeViewItem">
+            <div class="resumeViewItem__label">姓名</div>
+            <div class="resumeViewItem__content">张大彪</div>
+          </div>
+          <div class="resumeViewItem">
+            <div class="resumeViewItem__label">手机号</div>
+            <div class="resumeViewItem__content">1391111111</div>
+          </div>
+          <div class="resumeViewItem">
+            <div class="resumeViewItem__label">邮箱</div>
+            <div class="resumeViewItem__content">vip@163.com</div>
+          </div>
+        </div>
+      </div>
+      <div class="resumeViewSection">
+        <h2 class="resumeViewSection__title">基本信息</h2>
+
+        <div class="resumeViewForm">
+          <div class="resumeViewItem">
+            <div class="resumeViewItem__label">姓名</div>
+            <div class="resumeViewItem__content">张大彪</div>
+          </div>
+          <div class="resumeViewItem">
+            <div class="resumeViewItem__label">手机号</div>
+            <div class="resumeViewItem__content">1391111111</div>
+          </div>
+          <div class="resumeViewItem">
+            <div class="resumeViewItem__label">邮箱</div>
+            <div class="resumeViewItem__content">vip@163.com</div>
+          </div>
+        </div>
+      </div>
+      <div class="resumeViewSection">
+        <h2 class="resumeViewSection__title">基本信息</h2>
+
+        <div class="resumeViewForm">
+          <div class="resumeViewItem">
+            <div class="resumeViewItem__label">姓名</div>
+            <div class="resumeViewItem__content">张大彪</div>
+          </div>
+          <div class="resumeViewItem">
+            <div class="resumeViewItem__label">手机号</div>
+            <div class="resumeViewItem__content">1391111111</div>
+          </div>
+          <div class="resumeViewItem">
+            <div class="resumeViewItem__label">邮箱</div>
+            <div class="resumeViewItem__content">vip@163.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+import Header from '@/layout/header/index.vue'
+import { useRouter } from 'vue-router'
+export default defineComponent({
+  name: 'Resume',
+  components: {
+    Header,
+  },
+  setup() {
+    const router = useRouter()
+    const edit = () => {
+      router.push('/resume/edit')
+    }
+    return {
+      edit,
+    }
+  },
+})
+</script>
+
+<style lang="scss" scoped>
+.resume-page {
+  min-height: 100vh;
+  position: relative;
+  .banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 300px;
+    background-image: url('@/assets/2.jpg');
+    background-size: cover;
+    background-position: center center;
+  }
+}
+.profile-header {
+  position: relative;
+  margin: 0 auto;
+  width: 1016px;
+  height: 124px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1;
+  &__left {
+    h1 {
+      font-size: 30px;
+      color: $white;
+      height: 50px;
+      line-height: 50px;
+      font-weight: 700;
+    }
+    p {
+      margin-top: 4px;
+      font-size: 13px;
+      line-height: 1.75;
+      color: $white;
+      span {
+        margin: 0 4px;
+      }
+    }
+  }
+}
+
+.resume-form {
+  position: relative;
+  width: 1016px;
+  margin: 0 auto 130px;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+  background-color: $white;
+  padding: 8px 50px 40px;
+}
+.resumeViewSection {
+  margin-top: 30px;
+  box-sizing: border-box;
+  min-height: 200px;
+  &__title {
+    height: 32px;
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.6;
+    border-bottom: 3px solid $primary-color;
+  }
+  .resumeViewForm {
+    display: flex;
+    flex-wrap: wrap;
+    .resumeViewItem {
+      flex: 0 0 auto;
+      width: 50%;
+      margin-bottom: 20px;
+      min-height: 50px;
+      &__label {
+        font-size: 14px;
+        color: #ccc;
+        opacity: 0.8;
+        margin-bottom: 5px;
+      }
+      &__content {
+        word-wrap: break-word;
+        font-size: 16px;
+      }
+    }
+  }
+}
+</style>
