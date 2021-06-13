@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-12 17:50:35
- * @LastEditTime: 2021-06-12 18:16:09
+ * @LastEditTime: 2021-06-13 13:40:58
  * @Description:
  */
 
@@ -33,4 +33,17 @@ export function validatorEmail(
     return callback(new Error('邮箱格式不正确'))
   }
   callback()
+}
+
+export function getOffsetTop(
+  relativeNode: HTMLElement,
+  node: HTMLElement,
+  topSum = 0
+): number {
+  topSum += node.offsetTop
+  //  offsetParent  本身无定位且父元素无定位  则offsetParent 是body
+  if (node.offsetParent != relativeNode) {
+    return getOffsetTop(relativeNode, node.offsetParent as HTMLElement, topSum)
+  }
+  return topSum
 }

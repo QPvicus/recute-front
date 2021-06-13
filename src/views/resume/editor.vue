@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:18:59
- * @LastEditTime: 2021-06-12 19:15:43
+ * @LastEditTime: 2021-06-13 14:10:36
  * @Description:
 -->
 
@@ -86,7 +86,7 @@
     </div>
     <!-- 教育经历 -->
     <!-- 实习经历 -->
-    <!-- <div class="resumeSection">
+    <div class="resumeSection">
       <div class="resumeSection__left">
         <h2 class="resumeSection_title">基础信息</h2>
       </div>
@@ -103,7 +103,7 @@
           </el-form-item>
         </el-form>
       </div>
-    </div> -->
+    </div>
     <!-- 实习经历 -->
     <!-- 自我评价 -->
     <div class="resumeSection">
@@ -125,6 +125,7 @@
               type="textarea"
               placeholder="请输入自我评价"
               v-model="resume_self"
+              :autosize="{ minRows: 4 }"
             />
           </el-form-item>
           <el-form-item>
@@ -145,12 +146,35 @@
     </div>
     <!-- 自我评价 -->
   </div>
+  <div
+    ref="footerAction"
+    :class="[
+      'resumeEdit-footerAction',
+      { 'resumeEdit-footerAction--fixed': footerActionFixed },
+    ]"
+  >
+    <div class="footerAction__wrapper">
+      <el-button style="width: 120px" round>取消</el-button>
+      <el-button style="width: 120px" type="primary" round>保存</el-button>
+    </div>
+  </div>
+  <div class="footer"></div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs, unref } from 'vue'
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  onMounted,
+  reactive,
+  ref,
+  toRefs,
+  unref,
+} from 'vue'
 import Header from '@/layout/header/index.vue'
-import { validatorEmail, validatorMobile } from '@/utils'
+import { getOffsetTop, validatorEmail, validatorMobile } from '@/utils'
+import { throttle } from 'lodash-es'
 export default defineComponent({
   name: 'ResumeEditor',
   components: {
@@ -158,6 +182,20 @@ export default defineComponent({
   },
   setup() {
     const selfEvaluationShow = ref(false)
+    const footerActionFixed = ref(false)
+    const footerAction = ref<HTMLLIElement>()
+
+    const footerActionFixedShouleThres = computed(() => {
+      const topSum = getOffsetTop(
+        document.body,
+        footerAction.value as HTMLElement
+      )
+      console.log(topSum, 'topSum')
+      return topSum + (footerAction.value as HTMLElement).offsetHeight
+    })
+    nextTick(() => {
+      onPageScroll()
+    })
     const state = reactive({
       resume_info: {
         name: '',
@@ -215,11 +253,30 @@ export default defineComponent({
         ],
       },
     })
+
+    const onPageScroll = () => {
+      // console.log(footerAction.value?.offsetHeight, 'offsetHeight')
+      // console.log(footerAction.value?.offsetTop, 'offsetTop')
+      // console.log(footerAction.value?.scrollHeight, 'scrollHeight')
+      // console.log(document.body.scrollHeight)
+      // console.log(document.body.scrollTop)
+      // footerActionFixed.value =
+      //   window.screenY < footerActionFixedShouleThres.value - window.innerHeight
+      footerActionFixed.value =
+        window.scrollY <
+        footerActionFixedShouleThres.value - window.innerHeight - 80
+    }
+
+    onMounted(() => {
+      window.addEventListener('scroll', throttle(onPageScroll, 80))
+    })
     return {
       ...toRefs(state),
       rules: unref(rules),
       education,
       selfEvaluationShow,
+      footerActionFixed,
+      footerAction,
     }
   },
 })
@@ -228,6 +285,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .resume-edit {
   width: 1064px;
+  min-height: 100vh;
   .resume-header {
     margin-top: 50px;
     font-weight: 800;
@@ -282,5 +340,30 @@ export default defineComponent({
       }
     }
   }
+}
+.resumeEdit-footerAction {
+  padding: 30px 190px;
+  display: flex;
+  z-index: 20;
+  height: 80px;
+  align-items: center;
+  &--fixed {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: 0 190px;
+    background-color: $white;
+    box-shadow: 0 2px 16px 0 rgb(31 35 41 / 5%);
+  }
+  .footerAction__wrapper {
+    margin-left: auto;
+  }
+}
+
+.footer {
+  height: 300px;
+  /* background-color: rgba($color: #000000, $alpha: 0.5); */
+  margin-top: 20px;
 }
 </style>
