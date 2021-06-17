@@ -1,18 +1,18 @@
 <!--
  * @Author: Taylor Swift
- * @Date: 2021-06-10 11:49:02
- * @LastEditTime: 2021-06-16 13:40:24
+ * @Date: 2021-06-17 10:54:15
+ * @LastEditTime: 2021-06-17 10:55:00
  * @Description:
 -->
 
 <template>
-  <h1>Company</h1>
+  <h1>Jobs Details</h1>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'Company',
+  name: 'JobsDetail',
 })
 </script>

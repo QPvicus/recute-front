@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 20:52:18
- * @LastEditTime: 2021-06-11 18:14:50
+ * @LastEditTime: 2021-06-16 14:16:36
  * @Description:
 -->
 
@@ -71,20 +71,18 @@ export default defineComponent({
     const activeIndex = ref(-1)
     const SiderSubMenuStyle = computed((): CSSProperties => {
       return {
-        marginTop: `${-unref(activeIndex) * 40 - 5}px`,
+        marginTop: `${-unref(activeIndex) * 40 - 8}px`,
       }
     })
     const handleEnter = (index: number) => {
       isShow.value = false
       const dlRef = document.querySelectorAll('.job-menu dl')
-      console.log(dlRef)
       dlRef.forEach((item) => item.classList.remove('cur'))
       dlRef[index].classList.add('cur')
       // console.log(dlRef[index].children[1])
       activeIndex.value = index
     }
     const handleLeave = (index: number) => {
-      console.log(index)
       const dlRef = document.querySelectorAll('.job-menu dl')[index]
       dlRef.classList.remove('cur')
       activeIndex.value = -1

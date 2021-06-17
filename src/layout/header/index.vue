@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 09:02:19
- * @LastEditTime: 2021-06-13 14:13:23
+ * @LastEditTime: 2021-06-17 10:47:12
  * @Description:
 -->
 
@@ -16,7 +16,6 @@
           :default-active="activeIndex"
           class="el-menu-demo"
           mode="horizontal"
-          @select="handleSelect"
         >
           <el-menu-item index="1">
             <router-link to="/index"> 首页 </router-link>

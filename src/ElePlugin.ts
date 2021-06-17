@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-09 21:56:30
- * @LastEditTime: 2021-06-13 08:53:38
+ * @LastEditTime: 2021-06-17 10:36:58
  * @Description:
  */
 
@@ -36,6 +36,8 @@ import {
   ElDropdown,
   ElDropdownItem,
   ElDropdownMenu,
+  ElTag,
+  ElPagination,
 } from 'element-plus'
 
 const components = [
@@ -66,6 +68,8 @@ const components = [
   ElDropdown,
   ElDropdownItem,
   ElDropdownMenu,
+  ElTag,
+  ElPagination,
 ]
 const plugins = [ElMessage]
 function RegisterComponent(app: App) {

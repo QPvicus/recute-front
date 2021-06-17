@@ -1,13 +1,12 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-11 16:27:06
- * @LastEditTime: 2021-06-11 18:13:24
+ * @LastEditTime: 2021-06-16 13:50:03
  * @Description:
 -->
 
 <template>
   <div class="menu-sub">
-    {{ data.a }}
     <p class="menu-article">技术</p>
     <ul>
       <li class="menu-sub-item">
@@ -48,6 +47,10 @@ export default defineComponent({
   top: 0;
   z-index: 1;
   box-shadow: 0 1px 6px rgb(6 0 1 / 10%);
+
+  > ul {
+    min-height: 300px;
+  }
 
   .menu-article {
     padding-left: 20px;
