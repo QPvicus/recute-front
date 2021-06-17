@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:44:29
- * @LastEditTime: 2021-06-17 10:50:40
+ * @LastEditTime: 2021-06-17 11:03:59
  * @Description:
 -->
 
@@ -308,5 +308,8 @@ export default defineComponent({
   .company-desc {
     font-size: 13px;
   }
+}
+.pagination {
+  margin-top: 10px;
 }
 </style>

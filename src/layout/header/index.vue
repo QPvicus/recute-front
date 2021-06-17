@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 09:02:19
- * @LastEditTime: 2021-06-17 10:47:12
+ * @LastEditTime: 2021-06-17 11:24:41
  * @Description:
 -->
 
@@ -15,17 +15,12 @@
         <el-menu
           :default-active="activeIndex"
           class="el-menu-demo"
+          router
           mode="horizontal"
         >
-          <el-menu-item index="1">
-            <router-link to="/index"> 首页 </router-link>
-          </el-menu-item>
-          <el-menu-item index="2">
-            <router-link to="/jobs"> 职位 </router-link>
-          </el-menu-item>
-          <el-menu-item index="3">
-            <router-link to="/company"> 公司 </router-link>
-          </el-menu-item>
+          <el-menu-item index="/index"> 首页 </el-menu-item>
+          <el-menu-item index="/jobs"> 职位 </el-menu-item>
+          <el-menu-item index="/company"> 公司 </el-menu-item>
         </el-menu>
       </div>
       <div class="right-header">
@@ -50,13 +45,14 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'Header',
   setup() {
     const router = useRouter()
-    const activeIndex = ref('1')
+    const route = useRoute()
+    const activeIndex = route.path
     const iconShowTop = ref('el-icon-arrow-down')
     const visibleChange = (value: boolean) => {
       iconShowTop.value = value ? 'el-icon-arrow-up' : 'el-icon-arrow-down'
@@ -124,6 +120,7 @@ $primary-color: #409eff;
 .el-menu-item > a {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .router-link-active {
