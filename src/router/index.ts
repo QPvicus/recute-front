@@ -28,6 +28,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Company',
         component: () => import('@/views/company/index.vue'),
       },
+      {
+        path: '/company/detail/:id',
+        name: 'CompanyDetail',
+        component: () => import('@/views/company/components/comp-detail.vue'),
+      },
     ],
   },
   {

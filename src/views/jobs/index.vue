@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:44:29
- * @LastEditTime: 2021-06-17 11:03:59
+ * @LastEditTime: 2021-06-21 08:53:51
  * @Description:
 -->
 
@@ -59,7 +59,7 @@
     <div class="job-box">
       <ul class="job-list">
         <template v-for="item in 12" :key="item">
-          <li>
+          <li @click="router.push(`/jobs/detail/${item}`)">
             <div class="job-primary">
               <div class="info-primary">
                 <div class="job-title ellipsis">
@@ -114,10 +114,12 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'Jobs',
   setup() {
+    const router = useRouter()
     const searchValue = ref('')
     const state = reactive({
       education: '',
@@ -163,6 +165,7 @@ export default defineComponent({
       salary_list,
       comany_scale_list,
       currentChange,
+      router,
     }
   },
 })
