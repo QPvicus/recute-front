@@ -1,5 +1,8 @@
 @import './reset.scss';
 
+body {
+  background: #f5f5f5;
+}
 .wrapper {
   width: 1184px;
   max-width: 1184px;
@@ -14,4 +17,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.inline {
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  margin: 0 10px;
+  background: #bbbfc4;
 }

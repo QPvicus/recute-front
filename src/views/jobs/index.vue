@@ -1,12 +1,12 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:44:29
- * @LastEditTime: 2021-06-21 08:53:51
+ * @LastEditTime: 2021-06-21 15:22:21
  * @Description:
 -->
 
 <template>
-  <div class="search-box">
+  <div class="search-box wrapper">
     <el-input class="search" placeholder="请输入职位" v-model="searchValue">
       <template #append>
         <el-button icon="el-icon-search"></el-button>

@@ -1,12 +1,12 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-17 10:54:15
- * @LastEditTime: 2021-06-21 09:55:44
+ * @LastEditTime: 2021-06-21 15:25:28
  * @Description:
 -->
 
 <template>
-  <div class="job-detail-container">
+  <div class="job-detail-container wrapper">
     <div class="job-detail">
       <div class="job-header">
         <span>阿里巴巴职位</span>

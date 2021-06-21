@@ -1,15 +1,13 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 12:47:49
- * @LastEditTime: 2021-06-17 10:38:46
+ * @LastEditTime: 2021-06-21 15:24:32
  * @Description:
 -->
 <template>
   <div id="app-container">
     <Header />
-    <div class="wrapper">
-      <router-view></router-view>
-    </div>
+    <router-view></router-view>
     <Footer />
   </div>
 </template>

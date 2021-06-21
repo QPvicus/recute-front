@@ -1,66 +1,70 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:49:02
- * @LastEditTime: 2021-06-18 18:50:54
+ * @LastEditTime: 2021-06-21 15:23:36
  * @Description:
 -->
 
 <template>
-  <div class="company-content">
-    <div class="filter-condition">
-      <div class="filter-row">
-        <span class="title">公司地点:</span>
-        <p class="content">
-          <template v-for="item in 10" :key="item">
-            <span
-              @click="addrClick(item)"
-              :class="['content-item', { selected: selectedKey === item }]"
-              >全国</span
-            >
-          </template>
-        </p>
+  <div class="wrapper">
+    <div class="company-content">
+      <div class="filter-condition">
+        <div class="filter-row">
+          <span class="title">公司地点:</span>
+          <p class="content">
+            <template v-for="item in 10" :key="item">
+              <span
+                @click="addrClick(item)"
+                :class="['content-item', { selected: selectedKey === item }]"
+                >全国</span
+              >
+            </template>
+          </p>
+        </div>
+        <div class="filter-row">
+          <span class="title">公司类型:</span>
+          <p class="content">
+            <template v-for="item in 20" :key="item">
+              <span
+                :class="['content-item', { selected: selectedKey === item }]"
+                >不限</span
+              >
+            </template>
+          </p>
+        </div>
+        <div class="filter-row">
+          <span class="title">公司规模:</span>
+          <p class="content">
+            <template v-for="item in 20" :key="item">
+              <span
+                :class="['content-item', { selected: selectedKey === item }]"
+                >不限</span
+              >
+            </template>
+          </p>
+        </div>
       </div>
-      <div class="filter-row">
-        <span class="title">公司类型:</span>
-        <p class="content">
-          <template v-for="item in 20" :key="item">
-            <span :class="['content-item', { selected: selectedKey === item }]"
-              >不限</span
-            >
-          </template>
-        </p>
-      </div>
-      <div class="filter-row">
-        <span class="title">公司规模:</span>
-        <p class="content">
-          <template v-for="item in 20" :key="item">
-            <span :class="['content-item', { selected: selectedKey === item }]"
-              >不限</span
-            >
-          </template>
-        </p>
-      </div>
-    </div>
-    <div class="company-list">
-      <ul>
-        <template v-for="item in 30" :key="item">
-          <li>
-            <div class="company-info">
-              <div class="left-image">
-                <el-avatar
-                  :size="55"
-                  src="https://img.bosszhipin.com/beijin/mcs/bar/20191211/cff98890aeac18b0f4dee3577d92d543be1bd4a3bd2a63f070bdbdada9aad826.jpg?x-oss-process=image/resize,w_120,limit_0"
-                  shape="square"
-                ></el-avatar>
+      <div class="company-list">
+        <ul>
+          <template v-for="item in 30" :key="item">
+            <li>
+              <div class="company-info">
+                <div class="left-image">
+                  <el-avatar
+                    :size="55"
+                    src="https://img.bosszhipin.com/beijin/mcs/bar/20191211/cff98890aeac18b0f4dee3577d92d543be1bd4a3bd2a63f070bdbdada9aad826.jpg?x-oss-process=image/resize,w_120,limit_0"
+                    shape="square"
+                  ></el-avatar>
+                </div>
+                <div class="right-text">
+                  <h3 class="ellipsis">阿里巴巴集团</h3>
+                  <p>互联网</p>
+                </div>
               </div>
-              <div class="right-text">
-                <h3 class="ellipsis">阿里巴巴集团</h3>
-                <p>互联网</p>
-              </div>
-            </div>
-          </li>
-        </template>
-      </ul>
+            </li>
+          </template>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -140,6 +144,7 @@ export default defineComponent({
       box-sizing: border-box;
       padding-top: 20px;
       padding-left: 10px;
+      background: $white;
       &:hover {
         box-shadow: 0 2px 16px 0 rgb(31 35 41 / 5%);
         color: $primary-color;

@@ -1,33 +1,111 @@
 <template>
-  <div class="home">
-    <div class="search-container margin-auto">
-      <el-cascader
-        v-model="cascader"
-        :options="options"
-        :props="{ expandTrigger: 'hover' }"
-        @change="handleChange"
-        placeholder="职位类型"
-      ></el-cascader>
-      <el-input placeholder="搜索职位或公司" v-model="input3">
-        <template #append>
-          <el-button type="primary">搜索</el-button>
-        </template>
-      </el-input>
+  <div class="home wrapper">
+    <div
+      style="
+        background: rgba(0, 0, 0, 0.1);
+        padding-left: 34px;
+        padding-bottom: 13px;
+      "
+    >
+      <div class="search-container margin-auto">
+        <el-cascader
+          v-model="cascader"
+          :options="options"
+          :props="{ expandTrigger: 'hover' }"
+          @change="handleChange"
+          placeholder="职位类型"
+        ></el-cascader>
+        <el-input placeholder="搜索职位或公司" v-model="input3">
+          <template #append>
+            <el-button type="primary">搜索</el-button>
+          </template>
+        </el-input>
+      </div>
+      <div class="search-hot margin-auto">
+        <span>热门职位</span>
+        <a>web前端</a>
+        <a>web前端</a>
+        <a>web前端</a>
+        <a>web前端</a>
+      </div>
     </div>
-    <div class="search-hot margin-auto">
-      <span>热门职位</span>
-      <a>web前端</a>
-      <a>web前端</a>
-      <a>web前端</a>
-      <a>web前端</a>
-    </div>
-    <div class="home-box">
+    <!--   <div class="home-box">
       <SiderMenu />
       <el-carousel class="home-carousel">
         <el-carousel-item v-for="item in 4" :key="item">
           <img style="width: 100%; height: 100%" src="@/assets/1.jpg" alt="" />
         </el-carousel-item>
       </el-carousel>
+    </div> -->
+    <div class="classification-box">
+      <div class="cla-item">
+        <p class="title">互联网</p>
+        <a target="_blank" href="/#/jobs">
+          <span>前端开发</span>
+        </a>
+        <a target="_blank" href="/#/jobs">
+          <span>前端开发</span>
+        </a>
+        <a target="_blank" href="/#/jobs">
+          <span>前端开发</span>
+        </a>
+      </div>
+      <div class="cla-item">
+        <p class="title">互联网</p>
+        <a target="_blank" href="/#/jobs">
+          <span>前端开发</span>
+        </a>
+        <a target="_blank" href="/#/jobs">
+          <span>前端开发</span>
+        </a>
+        <a target="_blank" href="/#/jobs">
+          <span>前端开发</span>
+        </a>
+      </div>
+      <div class="cla-item">
+        <p class="title">互联网</p>
+        <a target="_blank" href="/#/jobs">
+          <span>前端开发</span>
+        </a>
+        <a target="_blank" href="/#/jobs">
+          <span>前端开发</span>
+        </a>
+        <a target="_blank" href="/#/jobs">
+          <span>前端开发</span>
+        </a>
+      </div>
+      <div class="cla-item">
+        <p class="title">互联网</p>
+        <a target="_blank" href="/#/jobs">
+          <span>前端开发</span>
+        </a>
+        <a target="_blank" href="/#/jobs">
+          <span>前端开发</span>
+        </a>
+        <a target="_blank" href="/#/jobs">
+          <span>前端开发</span>
+        </a>
+      </div>
+    </div>
+    <div class="advertisement">
+      <img
+        width="315"
+        height="70"
+        src="https://img01.51jobcdn.com/im/mkt/zn/bjt/pic_cg_miduoduo.jpg?1572510271"
+        alt=""
+      />
+      <img
+        width="315"
+        height="70"
+        src="https://img01.51jobcdn.com/im/mkt/zn/bjt/pic_cg_miduoduo.jpg?1572510271"
+        alt=""
+      />
+      <img
+        width="315"
+        height="70"
+        src="https://img01.51jobcdn.com/im/mkt/zn/bjt/pic_cg_miduoduo.jpg?1572510271"
+        alt=""
+      />
     </div>
     <div class="common-box">
       <PostCard />
@@ -40,12 +118,12 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs } from 'vue'
-import SiderMenu from '@/components/sider/SiderMenu.vue'
+// import SiderMenu from '@/components/sider/SiderMenu.vue'
 import PostCard from '@/components/post-card/index.vue'
 export default defineComponent({
   name: 'Home',
   components: {
-    SiderMenu,
+    // SiderMenu,
     PostCard,
   },
   setup() {
@@ -335,11 +413,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.home {
+  position: relative;
+  top: -116px;
+}
 .search-container {
   width: 946px;
   padding-top: 20px;
   display: flex;
 }
+
 .search-hot {
   width: 946px;
   margin-top: 10px;
@@ -354,6 +437,53 @@ export default defineComponent({
     padding: 0 14px;
     font-size: 13px;
   }
+}
+.classification-box {
+  display: flex;
+  justify-content: center;
+  height: 158px;
+  padding: 30px 0 20px;
+  background: #fff;
+
+  .cla-item {
+    /* flex: 1; */
+    width: 174px;
+    height: 158px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 8px;
+    &:not(:last-of-type) {
+      border-right: 1px solid #ddd;
+    }
+    .title {
+      max-width: 120px;
+      color: #333;
+      font-size: 16px;
+      margin-bottom: 22px;
+      text-align: center;
+      cursor: pointer;
+      &:hover {
+        color: $primary-color;
+      }
+    }
+    a {
+      line-height: 20px;
+      color: #666666;
+      margin-bottom: 16px;
+      padding-left: 31px;
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
+}
+.advertisement {
+  height: 70px;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 18px;
+  background: $white;
+  margin-bottom: 10px;
 }
 .home-box {
   display: flex;
