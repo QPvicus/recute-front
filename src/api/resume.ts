@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 18:57:20
- * @LastEditTime: 2021-06-22 19:19:14
+ * @LastEditTime: 2021-06-22 20:07:33
  * @Description:
  */
 
@@ -13,6 +13,7 @@ export interface EditData {
   educational: string
   email: string
   gender?: string
+  major: string
   name: string
   school: string
   selfevaluation?: string

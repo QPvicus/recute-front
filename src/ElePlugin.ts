@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-09 21:56:30
- * @LastEditTime: 2021-06-22 19:11:40
+ * @LastEditTime: 2021-06-22 21:26:40
  * @Description:
  */
 
@@ -42,6 +42,7 @@ import {
   ElRadio,
   ElRadioGroup,
   ElNotification,
+  ElEmpty,
 } from 'element-plus'
 
 const components = [
@@ -77,6 +78,7 @@ const components = [
   ElLink,
   ElRadio,
   ElRadioGroup,
+  ElEmpty,
 ]
 const plugins = [ElMessage, ElNotification]
 function RegisterComponent(app: App) {

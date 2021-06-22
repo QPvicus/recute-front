@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-11 18:36:30
- * @LastEditTime: 2021-06-11 19:55:41
+ * @LastEditTime: 2021-06-22 21:52:34
  * @Description:
 -->
 
@@ -10,7 +10,7 @@
     <div class="post-title">职位推荐</div>
     <ul class="post-list">
       <template v-for="item in 6" :key="item">
-        <li class="post-list-item" shadow="hover">
+        <li class="post-list-item" shadow="hover" @click="goJobById(item)">
           <div class="post-li">
             <a class="job_info">
               <div class="job_info--top">
@@ -42,6 +42,30 @@
     </ul>
   </div>
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
+
+export default defineComponent({
+  name: 'PostCard',
+  setup() {
+    const router = useRouter()
+    const goJobById = (id: number) => {
+      router.push({
+        name: 'JobsDetail',
+        params: {
+          id,
+        },
+      })
+    }
+
+    return {
+      goJobById,
+    }
+  },
+})
+</script>
 
 <style lang="scss">
 .post-card {

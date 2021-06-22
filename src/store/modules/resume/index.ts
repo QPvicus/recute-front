@@ -1,12 +1,13 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 19:00:52
- * @LastEditTime: 2021-06-22 19:48:11
+ * @LastEditTime: 2021-06-22 21:38:07
  * @Description:
  */
 
 import { addEditResume, EditData } from '@/api/resume'
 import { RESUME_EDIT } from '@/store/constants'
+import { ElMessage } from 'element-plus'
 import { ActionContext } from 'vuex'
 
 const createState = () => {
@@ -21,8 +22,15 @@ const actions = {
     _: ActionContext<ResumeState, unknown>,
     payload: EditData
   ) {
-    const data = await addEditResume(payload)
-    console.log(data)
+    try {
+      const { data } = await addEditResume(payload)
+      return data
+    } catch (err) {
+      ElMessage({
+        message: '保存简历失败',
+        type: 'error',
+      })
+    }
   },
 }
 

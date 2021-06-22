@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 10:42:16
- * @LastEditTime: 2021-06-22 19:48:44
+ * @LastEditTime: 2021-06-22 20:44:18
  * @Description:
  */
 
@@ -21,9 +21,9 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    const token = '824f43bc-c348-4c43-864c-e95090fb0670'
+    const token = '17b1bf0e-1179-4005-9022-d5f062de2880'
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.token = `${token}`
     }
     return config
   },

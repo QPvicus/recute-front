@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:16:26
- * @LastEditTime: 2021-06-12 13:51:25
+ * @LastEditTime: 2021-06-22 21:30:11
  * @Description:
 -->
 
@@ -39,22 +39,12 @@
             <div class="resumeViewItem__content">张大彪</div>
           </div>
           <div class="resumeViewItem">
-            <div class="resumeViewItem__label">手机号</div>
-            <div class="resumeViewItem__content">1391111111</div>
+            <div class="resumeViewItem__label">性别</div>
+            <div class="resumeViewItem__content">男</div>
           </div>
           <div class="resumeViewItem">
-            <div class="resumeViewItem__label">邮箱</div>
-            <div class="resumeViewItem__content">vip@163.com</div>
-          </div>
-        </div>
-      </div>
-      <div class="resumeViewSection">
-        <h2 class="resumeViewSection__title">基本信息</h2>
-
-        <div class="resumeViewForm">
-          <div class="resumeViewItem">
-            <div class="resumeViewItem__label">姓名</div>
-            <div class="resumeViewItem__content">张大彪</div>
+            <div class="resumeViewItem__label">年龄</div>
+            <div class="resumeViewItem__content">20</div>
           </div>
           <div class="resumeViewItem">
             <div class="resumeViewItem__label">手机号</div>
@@ -67,22 +57,57 @@
         </div>
       </div>
       <div class="resumeViewSection">
-        <h2 class="resumeViewSection__title">基本信息</h2>
+        <h2 class="resumeViewSection__title">教育经历</h2>
 
         <div class="resumeViewForm">
           <div class="resumeViewItem">
-            <div class="resumeViewItem__label">姓名</div>
-            <div class="resumeViewItem__content">张大彪</div>
+            <div class="resumeViewItem__label">学校</div>
+            <div class="resumeViewItem__content">杭州大学</div>
           </div>
           <div class="resumeViewItem">
-            <div class="resumeViewItem__label">手机号</div>
-            <div class="resumeViewItem__content">1391111111</div>
+            <div class="resumeViewItem__label">学历</div>
+            <div class="resumeViewItem__content">本科</div>
           </div>
           <div class="resumeViewItem">
-            <div class="resumeViewItem__label">邮箱</div>
-            <div class="resumeViewItem__content">vip@163.com</div>
+            <div class="resumeViewItem__label">专业</div>
+            <div class="resumeViewItem__content">计算机</div>
           </div>
         </div>
+      </div>
+      <div class="resumeViewSection">
+        <h2 class="resumeViewSection__title">荣誉证书</h2>
+        <div class="resumeViewSection_content">
+          {{
+            `sdfdsfsdf
+            sdfsdf
+          `
+          }}
+        </div>
+      </div>
+      <div class="resumeViewSection">
+        <h2 class="resumeViewSection__title">技能证书</h2>
+        <div class="resumeViewSection_content">
+          {{
+            `sdfdsfsdf
+            sdfsdf
+          `
+          }}
+        </div>
+      </div>
+      <div class="resumeViewSection">
+        <h2 class="resumeViewSection__title">自我评价</h2>
+        <template v-if="true">
+          <el-empty></el-empty>
+        </template>
+        <template v-else>
+          <div class="resumeViewSection_content">
+            {{
+              `sdfdsfsdf
+            sdfsdf
+          `
+            }}
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -175,6 +200,13 @@ export default defineComponent({
     line-height: 1.6;
     border-bottom: 3px solid $primary-color;
   }
+  &_content {
+    word-wrap: break-word;
+    white-space: pre-line;
+    font-size: 16px;
+    line-height: 1.75;
+    color: #1f2329;
+  }
   .resumeViewForm {
     display: flex;
     flex-wrap: wrap;
@@ -194,6 +226,13 @@ export default defineComponent({
         font-size: 16px;
       }
     }
+  }
+}
+
+:deep(.el-empty) {
+  padding: 0;
+  .el-empty__image {
+    width: 90px;
   }
 }
 </style>

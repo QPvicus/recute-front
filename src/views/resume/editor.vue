@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:18:59
- * @LastEditTime: 2021-06-22 19:46:37
+ * @LastEditTime: 2021-06-22 21:39:33
  * @Description:
 -->
 
@@ -241,7 +241,7 @@
     ]"
   >
     <div class="footerAction__wrapper">
-      <el-button style="width: 120px" round>取消</el-button>
+      <el-button style="width: 120px" round @click="cancel">取消</el-button>
       <el-button style="width: 120px" type="primary" round @click="handleClick"
         >保存</el-button
       >
@@ -265,6 +265,7 @@ import {
 import Header from '@/layout/header/index.vue'
 import { getOffsetTop, validatorEmail, validatorMobile } from '@/utils'
 import { throttle } from 'lodash-es'
+import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useStore } from 'vuex'
 import { GlobalState } from '@/store/types'
@@ -276,6 +277,7 @@ export default defineComponent({
     Header,
   },
   setup() {
+    const router = useRouter()
     const selfEvaluationShow = ref(false)
     const SkillsShow = ref(false)
     const certificateShow = ref(false)
@@ -368,6 +370,7 @@ export default defineComponent({
         window.scrollY <
         footerActionFixedShouleThres.value - window.innerHeight - 80
     }
+    //  简历编辑 模块
     const handleClick = () => {
       const infoValidator = (resumeInfoRef.value as any).validate()
       const eduValidator = (resumeEduRef.value as any).validate()
@@ -400,11 +403,16 @@ export default defineComponent({
             specialty,
             educational,
             certificate,
+            major,
           }
           console.log(data)
-          // const data: EditData = {
-          // }
-          store.dispatch(`resume/${RESUME_EDIT}`, data)
+          store.dispatch(`resume/${RESUME_EDIT}`, data).then((data) => {
+            // console.log(data)
+            ElMessage.success(data.message)
+            setTimeout(() => {
+              router.replace('/resume')
+            }, 500)
+          })
         })
         .catch(() => {
           ElMessage({
@@ -413,6 +421,12 @@ export default defineComponent({
             type: 'warning',
           })
         })
+    }
+    // 取消 编辑
+    const cancel = () => {
+      router.replace({
+        path: '/resume',
+      })
     }
     onMounted(() => {
       window.addEventListener('scroll', throttle(onPageScroll, 80))
@@ -429,6 +443,7 @@ export default defineComponent({
       resumeInfoRef,
       resumeEduRef,
       handleClick,
+      cancel,
     }
   },
 })

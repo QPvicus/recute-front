@@ -70,6 +70,12 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHashHistory('/'),
   routes,
+  scrollBehavior: (to) => {
+    // console.log(to, from, savedPosition)
+    if (to.fullPath === '/resume') {
+      return { top: 0 }
+    }
+  },
 })
 
 export default router
