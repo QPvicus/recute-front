@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-09 21:56:30
- * @LastEditTime: 2021-06-18 14:38:02
+ * @LastEditTime: 2021-06-22 19:11:40
  * @Description:
  */
 
@@ -39,6 +39,9 @@ import {
   ElTag,
   ElPagination,
   ElLink,
+  ElRadio,
+  ElRadioGroup,
+  ElNotification,
 } from 'element-plus'
 
 const components = [
@@ -72,8 +75,10 @@ const components = [
   ElTag,
   ElPagination,
   ElLink,
+  ElRadio,
+  ElRadioGroup,
 ]
-const plugins = [ElMessage]
+const plugins = [ElMessage, ElNotification]
 function RegisterComponent(app: App) {
   components.forEach((component) => {
     app.component(component.name, component)

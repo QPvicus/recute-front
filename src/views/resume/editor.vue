@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:18:59
- * @LastEditTime: 2021-06-22 09:01:30
+ * @LastEditTime: 2021-06-22 19:46:37
  * @Description:
 -->
 
@@ -17,10 +17,33 @@
         <h2 class="resumeSection_title">基础信息</h2>
       </div>
       <div class="resumeSection__right">
-        <el-form :model="resume_info" :rules="rules.resume_info">
+        <el-form
+          :model="resume_info"
+          :rules="rules.resume_info"
+          ref="resumeInfoRef"
+        >
           <el-form-item label="姓名" prop="name">
             <el-input v-model="resume_info.name" placeholder="请输入" />
           </el-form-item>
+          <el-row type="flex" :gutter="30" align="center">
+            <el-col :span="12">
+              <el-form-item label="性别" prop="gender">
+                <el-radio-group v-model="resume_info.gender">
+                  <el-radio label="男"></el-radio>
+                  <el-radio label="女"></el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-input
+                type="number"
+                min="16"
+                max="100"
+                v-model="resume_info.age"
+                placeholder="请输入年龄"
+              />
+            </el-col>
+          </el-row>
           <el-form-item label="手机号码" prop="mobile_number">
             <el-input
               v-model="resume_info.mobile_number"
@@ -40,7 +63,11 @@
         <h2 class="resumeSection_title">教育经历</h2>
       </div>
       <div class="resumeSection__right">
-        <el-form :model="resume_edu" :rules="rules.resume_edu">
+        <el-form
+          :model="resume_edu"
+          :rules="rules.resume_edu"
+          ref="resumeEduRef"
+        >
           <el-form-item label="学校" prop="school">
             <el-input v-model="resume_edu.school" />
           </el-form-item>
@@ -58,7 +85,7 @@
           <el-form-item label="专业" prop="major">
             <el-input v-model="resume_edu.major"></el-input>
           </el-form-item>
-          <el-form-item label="时间段" required>
+          <!--   <el-form-item label="时间段" required>
             <el-col>
               <el-form-item prop="startYear">
                 <el-date-picker
@@ -80,31 +107,91 @@
                 </el-date-picker>
               </el-form-item>
             </el-col>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
       </div>
     </div>
     <!-- 教育经历 -->
-    <!-- 实习经历 -->
+    <!-- 荣誉证书 -->
     <div class="resumeSection">
       <div class="resumeSection__left">
-        <h2 class="resumeSection_title">基础信息</h2>
+        <h2 class="resumeSection_title">荣誉证书</h2>
       </div>
       <div class="resumeSection__right">
-        <el-form>
-          <el-form-item label="姓名" prop="name">
-            <el-input v-model="resume_info.name" />
+        <div
+          class="add-button"
+          v-if="!certificateShow"
+          @click="certificateShow = !certificateShow"
+        >
+          <i class="el-icon-plus"></i>
+          添加
+        </div>
+        <el-form v-else>
+          <el-form-item>
+            <el-input
+              type="textarea"
+              placeholder="请输入荣誉证书"
+              v-model="resume_certificate"
+              :autosize="{ minRows: 4 }"
+            />
           </el-form-item>
-          <el-form-item label="手机号码" prop="mobile_number">
-            <el-input v-model="resume_info.mobile_number"></el-input>
-          </el-form-item>
-          <el-form-item label="邮箱" prop="email">
-            <el-input v-model="resume_info.email"></el-input>
+          <el-form-item>
+            <span
+              class="bottom-delete"
+              @click="
+                () => {
+                  certificateShow = !certificateShow
+                  resume_certificate = ''
+                }
+              "
+            >
+              <i class="el-icon-delete"></i>
+            </span>
           </el-form-item>
         </el-form>
       </div>
     </div>
-    <!-- 实习经历 -->
+    <!-- 荣誉证书 -->
+    <!-- 技能证书 -->
+    <div class="resumeSection">
+      <div class="resumeSection__left">
+        <h2 class="resumeSection_title">技能证书</h2>
+      </div>
+      <div class="resumeSection__right">
+        <div
+          class="add-button"
+          v-if="!SkillsShow"
+          @click="SkillsShow = !SkillsShow"
+        >
+          <i class="el-icon-plus"></i>
+          添加
+        </div>
+        <el-form v-else>
+          <el-form-item>
+            <el-input
+              type="textarea"
+              placeholder="请输入技能证书"
+              v-model="resume_skill"
+              :autosize="{ minRows: 4 }"
+            />
+          </el-form-item>
+          <el-form-item>
+            <span
+              class="bottom-delete"
+              @click="
+                () => {
+                  SkillsShow = !SkillsShow
+                  resume_skill = ''
+                }
+              "
+            >
+              <i class="el-icon-delete"></i>
+            </span>
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>
+    <!-- 技能证书 -->
     <!-- 自我评价 -->
     <div class="resumeSection">
       <div class="resumeSection__left">
@@ -155,7 +242,9 @@
   >
     <div class="footerAction__wrapper">
       <el-button style="width: 120px" round>取消</el-button>
-      <el-button style="width: 120px" type="primary" round>保存</el-button>
+      <el-button style="width: 120px" type="primary" round @click="handleClick"
+        >保存</el-button
+      >
     </div>
   </div>
   <div class="footer"></div>
@@ -169,12 +258,18 @@ import {
   onMounted,
   reactive,
   ref,
+  toRaw,
   toRefs,
   unref,
 } from 'vue'
 import Header from '@/layout/header/index.vue'
 import { getOffsetTop, validatorEmail, validatorMobile } from '@/utils'
 import { throttle } from 'lodash-es'
+import { ElMessage } from 'element-plus'
+import { useStore } from 'vuex'
+import { GlobalState } from '@/store/types'
+import { RESUME_EDIT } from '@/store/constants'
+import { EditData } from '@/api/resume'
 export default defineComponent({
   name: 'ResumeEditor',
   components: {
@@ -182,9 +277,13 @@ export default defineComponent({
   },
   setup() {
     const selfEvaluationShow = ref(false)
+    const SkillsShow = ref(false)
+    const certificateShow = ref(false)
     const footerActionFixed = ref(false)
     const footerAction = ref<HTMLLIElement>()
+    const store = useStore<GlobalState>()
 
+    // div 元素 吸附 计算
     const footerActionFixedShouleThres = computed(() => {
       const topSum = getOffsetTop(
         document.body,
@@ -198,17 +297,19 @@ export default defineComponent({
     })
     const state = reactive({
       resume_info: {
-        name: '',
-        mobile_number: '',
-        email: '',
+        name: 'a',
+        mobile_number: '13911111111',
+        email: '2@qq.com',
+        gender: '男',
+        age: '20',
       },
       resume_edu: {
-        school: '',
-        education: '',
-        major: '',
-        startYear: '',
-        endYear: '',
+        school: 'dd',
+        education: '专科',
+        major: '大师傅撒旦',
       },
+      resume_skill: '',
+      resume_certificate: '',
       resume_self: '',
     })
     const education = ref([
@@ -253,7 +354,8 @@ export default defineComponent({
         ],
       },
     })
-
+    const resumeInfoRef = ref<HTMLElement>()
+    const resumeEduRef = ref<HTMLElement>()
     const onPageScroll = () => {
       // console.log(footerAction.value?.offsetHeight, 'offsetHeight')
       // console.log(footerAction.value?.offsetTop, 'offsetTop')
@@ -266,7 +368,52 @@ export default defineComponent({
         window.scrollY <
         footerActionFixedShouleThres.value - window.innerHeight - 80
     }
-
+    const handleClick = () => {
+      const infoValidator = (resumeInfoRef.value as any).validate()
+      const eduValidator = (resumeEduRef.value as any).validate()
+      Promise.all([infoValidator, eduValidator])
+        .then(() => {
+          // console.log(1)
+          const {
+            resume_info,
+            resume_skill: specialty,
+            resume_edu,
+            resume_self: selfevaluation,
+            resume_certificate: certificate,
+          } = toRaw(state)
+          const {
+            name,
+            mobile_number: telephone,
+            email,
+            gender,
+            age,
+          } = resume_info
+          const { school, education: educational, major } = resume_edu
+          const data: EditData = {
+            name,
+            gender,
+            age,
+            email,
+            telephone,
+            selfevaluation,
+            school,
+            specialty,
+            educational,
+            certificate,
+          }
+          console.log(data)
+          // const data: EditData = {
+          // }
+          store.dispatch(`resume/${RESUME_EDIT}`, data)
+        })
+        .catch(() => {
+          ElMessage({
+            showClose: true,
+            message: '请你完善必填项',
+            type: 'warning',
+          })
+        })
+    }
     onMounted(() => {
       window.addEventListener('scroll', throttle(onPageScroll, 80))
     })
@@ -275,8 +422,13 @@ export default defineComponent({
       rules: unref(rules),
       education,
       selfEvaluationShow,
+      SkillsShow,
+      certificateShow,
       footerActionFixed,
       footerAction,
+      resumeInfoRef,
+      resumeEduRef,
+      handleClick,
     }
   },
 })

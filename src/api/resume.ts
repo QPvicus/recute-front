@@ -1,0 +1,34 @@
+/*
+ * @Author: Taylor Swift
+ * @Date: 2021-06-22 18:57:20
+ * @LastEditTime: 2021-06-22 19:19:14
+ * @Description:
+ */
+
+import request from '@/utils/request'
+
+export interface EditData {
+  age?: string
+  certificate?: string
+  educational: string
+  email: string
+  gender?: string
+  name: string
+  school: string
+  selfevaluation?: string
+  specialty?: string
+  telephone: string
+}
+
+/**
+ * 编辑学生简历
+ * @param data 学生简历对象
+ * @returns
+ */
+export const addEditResume = (data: EditData) => {
+  return request({
+    url: '/student/saveResume',
+    method: 'POST',
+    data,
+  })
+}

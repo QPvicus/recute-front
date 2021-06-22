@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 10:42:16
- * @LastEditTime: 2021-06-22 10:44:10
+ * @LastEditTime: 2021-06-22 19:48:44
  * @Description:
  */
 
@@ -11,7 +11,7 @@ import axios from 'axios'
  *  @description 项目初始化
  */
 const instance = axios.create({
-  baseURL: '/',
+  baseURL: 'http://47.98.44.98:5253/Recruit',
 })
 
 /**
@@ -21,7 +21,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    const token = ''
+    const token = '824f43bc-c348-4c43-864c-e95090fb0670'
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }

@@ -1,8 +1,8 @@
 import { createStore } from 'vuex'
 
-export default createStore({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+import modules from './modules'
+import { GlobalState } from './types'
+
+export default createStore<GlobalState>({
+  modules,
 })
