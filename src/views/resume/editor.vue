@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:18:59
- * @LastEditTime: 2021-06-13 14:10:36
+ * @LastEditTime: 2021-06-22 09:01:30
  * @Description:
 -->
 
@@ -283,6 +283,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+body {
+  background: white;
+}
+
 .resume-edit {
   width: 1064px;
   min-height: 100vh;

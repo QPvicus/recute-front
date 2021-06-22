@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 09:02:19
- * @LastEditTime: 2021-06-21 14:49:58
+ * @LastEditTime: 2021-06-22 09:16:42
  * @Description:
 -->
 
@@ -36,12 +36,12 @@
         </router-link>
         <router-link to="/jobs" target="_blank" v-slot="{ href, isActive }">
           <li class="right-header-item" :class="{ active: isActive }">
-            <a :href="href" target="_blank">公司</a>
+            <a :href="href" target="_blank">职位</a>
           </li>
         </router-link>
         <router-link to="/company" target="_blank" v-slot="{ href, isActive }">
           <li class="right-header-item" :class="{ active: isActive }">
-            <a :href="href" target="_blank">职位</a>
+            <a :href="href" target="_blank">公司</a>
           </li>
         </router-link>
         <span class="inline"></span>
@@ -96,7 +96,7 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const route = useRoute()
-    const isLogin = ref(false)
+    const isLogin = ref(true)
     const activeIndex = route.path
     const iconShowTop = ref('el-icon-arrow-down')
     const visibleChange = (value: boolean) => {
