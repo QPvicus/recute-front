@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:16:26
- * @LastEditTime: 2021-06-22 21:30:11
+ * @LastEditTime: 2021-06-27 20:52:10
  * @Description:
 -->
 
@@ -14,7 +14,7 @@
         <h1>我的简历</h1>
         <p>
           <i class="el-icon-time"></i>
-          <span>最新时间: 2021-06-12 09:50</span>
+          <span>最新时间: {{ profileResume.gmtModified }}</span>
         </p>
       </div>
       <div>
@@ -36,23 +36,27 @@
         <div class="resumeViewForm">
           <div class="resumeViewItem">
             <div class="resumeViewItem__label">姓名</div>
-            <div class="resumeViewItem__content">张大彪</div>
+            <div class="resumeViewItem__content">{{ profileResume.name }}</div>
           </div>
           <div class="resumeViewItem">
             <div class="resumeViewItem__label">性别</div>
-            <div class="resumeViewItem__content">男</div>
+            <div class="resumeViewItem__content">
+              {{ profileResume.gender }}
+            </div>
           </div>
           <div class="resumeViewItem">
             <div class="resumeViewItem__label">年龄</div>
-            <div class="resumeViewItem__content">20</div>
+            <div class="resumeViewItem__content">{{ profileResume.age }}</div>
           </div>
           <div class="resumeViewItem">
             <div class="resumeViewItem__label">手机号</div>
-            <div class="resumeViewItem__content">1391111111</div>
+            <div class="resumeViewItem__content">
+              {{ profileResume.telephone }}
+            </div>
           </div>
           <div class="resumeViewItem">
             <div class="resumeViewItem__label">邮箱</div>
-            <div class="resumeViewItem__content">vip@163.com</div>
+            <div class="resumeViewItem__content">{{ profileResume.email }}</div>
           </div>
         </div>
       </div>
@@ -62,50 +66,52 @@
         <div class="resumeViewForm">
           <div class="resumeViewItem">
             <div class="resumeViewItem__label">学校</div>
-            <div class="resumeViewItem__content">杭州大学</div>
+            <div class="resumeViewItem__content">
+              {{ profileResume.school }}
+            </div>
           </div>
           <div class="resumeViewItem">
             <div class="resumeViewItem__label">学历</div>
-            <div class="resumeViewItem__content">本科</div>
+            <div class="resumeViewItem__content">
+              {{ profileResume.educational }}
+            </div>
           </div>
           <div class="resumeViewItem">
             <div class="resumeViewItem__label">专业</div>
-            <div class="resumeViewItem__content">计算机</div>
+            <div class="resumeViewItem__content">{{ profileResume.major }}</div>
           </div>
         </div>
       </div>
       <div class="resumeViewSection">
         <h2 class="resumeViewSection__title">荣誉证书</h2>
-        <div class="resumeViewSection_content">
-          {{
-            `sdfdsfsdf
-            sdfsdf
-          `
-          }}
-        </div>
-      </div>
-      <div class="resumeViewSection">
-        <h2 class="resumeViewSection__title">技能证书</h2>
-        <div class="resumeViewSection_content">
-          {{
-            `sdfdsfsdf
-            sdfsdf
-          `
-          }}
-        </div>
-      </div>
-      <div class="resumeViewSection">
-        <h2 class="resumeViewSection__title">自我评价</h2>
-        <template v-if="true">
+        <template v-if="profileResume.certificate.length === 0">
           <el-empty></el-empty>
         </template>
         <template v-else>
           <div class="resumeViewSection_content">
-            {{
-              `sdfdsfsdf
-            sdfsdf
-          `
-            }}
+            {{ profileResume.certificate }}
+          </div>
+        </template>
+      </div>
+      <div class="resumeViewSection">
+        <h2 class="resumeViewSection__title">技能证书</h2>
+        <template v-if="profileResume.specialty.length === 0">
+          <el-empty></el-empty>
+        </template>
+        <template v-else>
+          <div class="resumeViewSection_content">
+            {{ profileResume.specialty }}
+          </div>
+        </template>
+      </div>
+      <div class="resumeViewSection">
+        <h2 class="resumeViewSection__title">自我评价</h2>
+        <template v-if="!profileResume.selfevaluation">
+          <el-empty></el-empty>
+        </template>
+        <template v-else>
+          <div class="resumeViewSection_content">
+            {{ profileResume.selfevaluation }}
           </div>
         </template>
       </div>
@@ -114,21 +120,41 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import Header from '@/layout/header/index.vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { GlobalState } from '@/store/types'
+import { getProfileResume } from './getProfileResume'
 export default defineComponent({
   name: 'Resume',
   components: {
     Header,
   },
   setup() {
+    const store = useStore<GlobalState>()
+    // const getProfileResume = () => {
+    //   store.dispatch(`resume/${GET_PROFILE_RESUME}`, id).then((res) => {
+    //     store.dispatch(
+    //       `resume/${SET_PROFILE_RESUME}`,
+    //       res.message.studentResumeList[0]
+    //     )
+    //     nextTick()
+    //     // profileResume.value = {...profileResume.value, }
+    //   })
+    // }
+    const profileResume = store.getters['resume/getResume']
+    console.log(profileResume)
     const router = useRouter()
     const edit = () => {
       router.push('/resume/edit')
     }
+    onMounted(() => {
+      getProfileResume()
+    })
     return {
       edit,
+      profileResume,
     }
   },
 })

@@ -1,12 +1,12 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 10:42:16
- * @LastEditTime: 2021-06-22 20:44:18
+ * @LastEditTime: 2021-06-27 18:36:21
  * @Description:
  */
 
 import axios from 'axios'
-
+import store from '@/store'
 /**
  *  @description 项目初始化
  */
@@ -18,10 +18,9 @@ const instance = axios.create({
  * @description 请求拦截器  请求之前携带 token
  *
  */
-
 instance.interceptors.request.use(
   (config) => {
-    const token = '17b1bf0e-1179-4005-9022-d5f062de2880'
+    const token = store.getters['user/getUser'].token
     if (token) {
       config.headers.token = `${token}`
     }

@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:18:59
- * @LastEditTime: 2021-06-22 21:39:33
+ * @LastEditTime: 2021-06-27 20:58:26
  * @Description:
 -->
 
@@ -271,6 +271,8 @@ import { useStore } from 'vuex'
 import { GlobalState } from '@/store/types'
 import { RESUME_EDIT } from '@/store/constants'
 import { EditData } from '@/api/resume'
+import { getProfileResume } from './getProfileResume'
+import { ResumeState } from '@/store/modules/resume'
 export default defineComponent({
   name: 'ResumeEditor',
   components: {
@@ -278,12 +280,12 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
+    const store = useStore<GlobalState>()
     const selfEvaluationShow = ref(false)
     const SkillsShow = ref(false)
     const certificateShow = ref(false)
     const footerActionFixed = ref(false)
     const footerAction = ref<HTMLLIElement>()
-    const store = useStore<GlobalState>()
 
     // div 元素 吸附 计算
     const footerActionFixedShouleThres = computed(() => {
@@ -297,18 +299,47 @@ export default defineComponent({
     nextTick(() => {
       onPageScroll()
     })
+    const profileResume = store.getters['resume/getResume'] as ResumeState
+    // 此处写法不明智  实际上可以 用 vuex state 来代替
+    function setProfileResume() {
+      const {
+        name,
+        age,
+        gender,
+        telephone,
+        email,
+        educational,
+        major,
+        school,
+        specialty,
+        certificate,
+        selfevaluation,
+      } = profileResume
+      state.resume_info.name = name
+      state.resume_info.age = age
+      state.resume_info.email = email
+      state.resume_info.gender = gender
+      state.resume_info.mobile_number = telephone
+      state.resume_edu.school = school
+      state.resume_edu.education = educational
+      state.resume_edu.major = major
+      state.resume_skill = specialty
+      state.resume_certificate = certificate
+      state.resume_self = selfevaluation
+    }
+    // 此处写法不明智
     const state = reactive({
       resume_info: {
-        name: 'a',
-        mobile_number: '13911111111',
-        email: '2@qq.com',
-        gender: '男',
-        age: '20',
+        name: '',
+        mobile_number: '',
+        email: '',
+        gender: '',
+        age: '',
       },
       resume_edu: {
-        school: 'dd',
-        education: '专科',
-        major: '大师傅撒旦',
+        school: '',
+        education: '',
+        major: '',
       },
       resume_skill: '',
       resume_certificate: '',
@@ -430,6 +461,8 @@ export default defineComponent({
     }
     onMounted(() => {
       window.addEventListener('scroll', throttle(onPageScroll, 80))
+      getProfileResume()
+      setProfileResume()
     })
     return {
       ...toRefs(state),
@@ -444,6 +477,7 @@ export default defineComponent({
       resumeEduRef,
       handleClick,
       cancel,
+      profileResume,
     }
   },
 })
