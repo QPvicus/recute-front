@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, ref } from 'vue'
+import { defineComponent, onBeforeUnmount, provide, ref } from 'vue'
 export const SELECT_KEYS = 'select_keys'
 export default defineComponent({
   name: 'Company',

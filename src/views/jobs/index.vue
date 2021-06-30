@@ -58,41 +58,46 @@
     </div>
     <div class="job-box">
       <ul class="job-list">
-        <template v-for="item in 12" :key="item">
-          <li @click="router.push(`/jobs/detail/${item}`)">
+        <template v-for="item in jobList" :key="item.id">
+          <li
+            @click="
+              router.push(
+                `/jobs/detail/${item.id}?company_id=${item.companyId}`
+              )
+            "
+          >
             <div class="job-primary">
               <div class="info-primary">
                 <div class="job-title ellipsis">
-                  <span class="job-name">阿里MMC 21届实习...</span>
-                  <span class="job-addr">杭州·滨江区·长河</span>
+                  <span class="job-name">{{ item.positionName }}</span>
+                  <span class="job-addr">杭州</span>
                 </div>
                 <div class="job-limit">
-                  <span class="salary">14-28K</span>
-                  <span>学历不限</span>
+                  <span class="salary">{{ item.remuneration }}</span>
+                  <span>{{ item.education }}</span>
                 </div>
               </div>
               <div class="info-company">
                 <div class="company-text ellipsis">
-                  <h3>阿里巴巴集团</h3>
-                  <p>互联网 <span class="line"></span> 10000人以上</p>
+                  <h3>{{ item.company }}</h3>
+                  <p>
+                    {{ item.companytype }} <span class="line"></span>
+                    {{ item.scale }}
+                  </p>
                 </div>
                 <div class="company-logo">
-                  <img
-                    src="https://img.bosszhipin.com/beijin/mcs/bar/20191211/cff98890aeac18b0f4dee3577d92d543be1bd4a3bd2a63f070bdbdada9aad826.jpg?x-oss-process=image/resize,w_100,limit_0"
-                    alt=""
-                  />
+                  <img :src="item.icon" alt="" />
                 </div>
               </div>
             </div>
             <div class="job-footer">
               <div class="tags ellipsis">
-                <el-tag type="info" size="small">前端开发</el-tag>
-                <el-tag type="info" size="small">HTML</el-tag>
-                <el-tag type="info" size="small">CSS</el-tag>
-                <el-tag type="info" size="small">Web端</el-tag>
+                <template v-for="tag in item.classify.split(',')" :key="tag">
+                  <el-tag type="info" size="small">{{ tag }}</el-tag>
+                </template>
               </div>
               <div class="company-desc ellipsis">
-                带薪年假，补充医疗保险，五险一金，餐补，加班补助，免费班车，节日福利，年终奖，员工旅游，定期体检，交通补助，股票期权
+                {{ item.safeguard }}
               </div>
             </div>
           </li>
@@ -105,7 +110,7 @@
         @current-change="currentChange"
         background
         layout="prev, pager, next"
-        :total="200"
+        :total="page.total"
       >
       </el-pagination>
     </div>
@@ -113,8 +118,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs } from 'vue'
+import { defineComponent, onMounted, reactive, ref, toRaw, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
+import { getJobList } from '@/api/job'
 
 export default defineComponent({
   name: 'Jobs',
@@ -147,6 +153,18 @@ export default defineComponent({
       { value: '1000~9999人', command: '1000~9999人' },
       { value: '10000人以上', command: '10000人以上' },
     ]
+    const page = reactive({
+      nowPage: 1,
+      sumPage: 5,
+      total: null,
+    })
+    const jobList = ref<any[]>([])
+    async function getJobsDetail() {
+      const { data } = await getJobList(page.nowPage, page.sumPage)
+      console.log(data)
+      jobList.value = [...data.message.positionVOList]
+      page.total = data.message.cont
+    }
     const currentChange = (index: string) => {
       console.log(index)
     }
@@ -156,6 +174,9 @@ export default defineComponent({
     const command1 = (o: any) => {
       console.log(o)
     }
+    onMounted(async () => {
+      await getJobsDetail()
+    })
     return {
       searchValue,
       ...toRefs(state),
@@ -166,6 +187,8 @@ export default defineComponent({
       comany_scale_list,
       currentChange,
       router,
+      page,
+      jobList,
     }
   },
 })
