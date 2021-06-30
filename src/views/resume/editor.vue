@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:18:59
- * @LastEditTime: 2021-06-27 20:58:26
+ * @LastEditTime: 2021-06-30 18:13:31
  * @Description:
 -->
 
@@ -85,29 +85,6 @@
           <el-form-item label="专业" prop="major">
             <el-input v-model="resume_edu.major"></el-input>
           </el-form-item>
-          <!--   <el-form-item label="时间段" required>
-            <el-col>
-              <el-form-item prop="startYear">
-                <el-date-picker
-                  v-model="resume_edu.startYear"
-                  placeholder="请选择开始日期"
-                  type="year"
-                >
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col> <span style="margin: 0 10px">至</span></el-col>
-            <el-col>
-              <el-form-item prop="endYear">
-                <el-date-picker
-                  v-model="resume_edu.endYear"
-                  placeholder="请选择结束日期"
-                  type="year"
-                >
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
-          </el-form-item> -->
         </el-form>
       </div>
     </div>
