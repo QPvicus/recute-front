@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-17 10:54:15
- * @LastEditTime: 2021-06-21 15:25:28
+ * @LastEditTime: 2021-07-02 18:43:17
  * @Description:
 -->
 
@@ -22,7 +22,7 @@
         <!--        2、深入理解业务，准确分析问题，研发适合的算法与策略，提升产品的用户体验和发挥数据的最大价值；<br />-->
         <!--        3、参与打造智能SaaS产品，产品包含但不限于以下算法方向：推荐、图像、NLP、知识图谱等；<br />-->
         <!--        4、负责算法团队的人员培养，业务能力提升与开发效率的不断优化。<br />-->
-        <!--        {{ jobDetail.information[1] }}-->
+        {{ jobDetail.information[0] }}
       </div>
       <div class="job-title">职位要求</div>
       <div class="job-content">
@@ -31,7 +31,7 @@
         <!--        3、有扎实的编程基础和算法功底，熟悉传统机器学习、深度学习算法和具体落地；<br />-->
         <!--        4、责任心强，积极主动，有良好的沟通能力和团队合作能力；善于从复杂的问题中快速找到最佳的落地路径；<br />-->
         <!--        5、有SaaS领域AI产品研发经验者优先。-->
-        <!--        {{ jobDetail.information[3] }}-->
+        {{ jobDetail.information[1] }}
       </div>
 
       <div class="post-btn">
@@ -42,31 +42,32 @@
       <div class="title">公司基本信息</div>
       <div class="company-info">
         <div class="left-img">
-          <img
-            src="https://img.bosszhipin.com/beijin/mcs/chatphoto/20170622/c17c4cb5f2e6d5872586361b66bcf7607a2c74a0a4b16db27ca0802214e17896.jpg?x-oss-process=image/resize,w_120,limit_0"
-            alt=""
-          />
+          <img :src="companyInfo.icon" alt="" />
         </div>
-        <router-link class="comp-name" target="_blank" to="/company/detail/1"
-          >阿里巴巴
+        <router-link
+          class="comp-name"
+          target="_blank"
+          :to="`/company/detail/${company_id}`"
+          >{{ companyInfo.company }}
         </router-link>
       </div>
       <p>
         <i class="el-icon-user"></i>
-        {{ '500-999人' }}
+        {{ companyInfo.scale }}
       </p>
       <p>
         <i class="el-icon-menu"></i>
-        {{ '公司类型' }}
+        {{ companyInfo.companytype }}
       </p>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, shallowReactive, toRefs } from 'vue'
+import { defineComponent, shallowReactive, toRefs, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getJobDetailById } from '@/api/job'
+import { getCompanyInfoById } from '@/api/conpany'
 
 export default defineComponent({
   name: 'JobsDetail',
@@ -74,10 +75,10 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const id = route.params.id
-    const company_id = route.query.company_id
+    const company_id = route.query.company_id as string
     const state = shallowReactive({
-      jobDetail: {} as any,
-      companyInfo: {} as any,
+      jobDetail: JSON.parse(sessionStorage.getItem('jobDetail') as any),
+      companyInfo: JSON.parse(sessionStorage.getItem('companyBrief') as any),
     })
     async function getJobDetail() {
       try {
@@ -85,18 +86,41 @@ export default defineComponent({
         console.log(data)
         state.jobDetail = data.message.companyPositionList[0]
         state.jobDetail.information = stringToArr(state.jobDetail.information)
-        console.log(state.jobDetail)
+        sessionStorage.setItem('jobDetail', JSON.stringify(state.jobDetail))
       } catch (err) {
         await router.push('/notFound')
       }
     }
+    async function getCompanyBrief(companyId: string) {
+      try {
+        const { data } = await getCompanyInfoById(companyId)
+        console.log(data)
+        state.companyInfo = data.message.companyInformationList[0]
+        sessionStorage.setItem(
+          'companyBrief',
+          JSON.stringify(state.companyInfo)
+        )
+      } catch (err) {
+        // await router.push('/notFound')
+        console.log(err)
+      }
+    }
+    // 解决 重复获取本地存得 JobDetail 不同id param 应该调用接口
+    watch(
+      [() => id, () => company_id],
+      () => {
+        getJobDetail()
+        getCompanyBrief(company_id)
+      },
+      { immediate: true }
+    )
     function stringToArr(info: string) {
       return info.split('#')
     }
-    onBeforeMount(async () => {
-      await getJobDetail()
-    })
-
+    if (!sessionStorage.getItem('jobDetail')) {
+      getJobDetail()
+      getCompanyBrief(company_id)
+    }
     return {
       route,
       router,

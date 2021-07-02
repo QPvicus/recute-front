@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:44:29
- * @LastEditTime: 2021-06-21 15:22:21
+ * @LastEditTime: 2021-07-02 18:29:05
  * @Description:
 -->
 
@@ -109,6 +109,7 @@
       <el-pagination
         @current-change="currentChange"
         background
+        :page-size="6"
         layout="prev, pager, next"
         :total="page.total"
       >
@@ -118,7 +119,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref, toRaw, toRefs } from 'vue'
+import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { getJobList } from '@/api/job'
 
@@ -155,7 +156,7 @@ export default defineComponent({
     ]
     const page = reactive({
       nowPage: 1,
-      sumPage: 5,
+      sumPage: 6,
       total: null,
     })
     const jobList = ref<any[]>([])
@@ -165,8 +166,10 @@ export default defineComponent({
       jobList.value = [...data.message.positionVOList]
       page.total = data.message.cont
     }
-    const currentChange = (index: string) => {
+    const currentChange = (index: number) => {
       console.log(index)
+      page.nowPage = index
+      getJobsDetail()
     }
     const command = (o: any) => {
       console.log(o)

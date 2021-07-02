@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:49:02
- * @LastEditTime: 2021-06-21 15:23:36
+ * @LastEditTime: 2021-07-02 18:23:20
  * @Description:
 -->
 
@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, provide, ref } from 'vue'
+import { defineComponent, onBeforeUnmount, ref } from 'vue'
 export const SELECT_KEYS = 'select_keys'
 export default defineComponent({
   name: 'Company',

@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "clean:lib": "rimraf node_modules"
+    "clean:lib": "rimraf node_modules",
+    "prettier:lib": "prettier --config ./prettierrc -w"
   },
   "dependencies": {
     "axios": "^0.21.1",
