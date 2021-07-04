@@ -41,3 +41,26 @@ export const getJobsListSearch = (
     },
   })
 }
+
+/**
+ * 根据公司id 查询 所有职位
+ * @param keyWord
+ * @param nowPage
+ * @param sumPage
+ * @returns
+ */
+export const getAllJobsByCompanyId = (
+  keyWord: string,
+  nowPage = 1,
+  sumPage = 30
+) => {
+  return request({
+    url: '/show/companyIDShowPage',
+    method: 'POST',
+    data: {
+      keyWord,
+      nowPage,
+      sumPage,
+    },
+  })
+}

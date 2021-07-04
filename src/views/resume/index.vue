@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:16:26
- * @LastEditTime: 2021-07-01 09:22:10
+ * @LastEditTime: 2021-07-04 22:09:18
  * @Description:
 -->
 
@@ -120,36 +120,36 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, onMounted, shallowRef } from 'vue'
 import Header from '@/layout/header/index.vue'
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-import { GlobalState } from '@/store/types'
-import { getProfileResume } from './getProfileResume'
+import { getProfileResumeById } from '@/api/resume'
 export default defineComponent({
   name: 'Resume',
   components: {
     Header,
   },
   setup() {
-    const store = useStore<GlobalState>()
-    // const getProfileResume = () => {
-    //   store.dispatch(`resume/${GET_PROFILE_RESUME}`, id).then((res) => {
-    //     store.dispatch(
-    //       `resume/${SET_PROFILE_RESUME}`,
-    //       res.message.studentResumeList[0]
-    //     )
-    //     nextTick()
-    //     // profileResume.value = {...profileResume.value, }
-    //   })
-    // }
-    const profileResume = store.getters['resume/getResume']
-    console.log(profileResume)
     const router = useRouter()
     const edit = () => {
       router.push('/resume/edit')
     }
+    const id = localStorage.getItem('user_id')
+    const profileResume = shallowRef<any>({})
+    const getProfileResume = async () => {
+      const { data } = await getProfileResumeById(id)
+      console.log(data)
+      const resume = data.message.studentResumeList[0]
+      console.log(resume)
+      if (resume == undefined) {
+        edit()
+      } else {
+        profileResume.value = resume
+        console.log(profileResume.value)
+      }
+    }
     onMounted(() => {
+      console.log(1)
       getProfileResume()
     })
     return {

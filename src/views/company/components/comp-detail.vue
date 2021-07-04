@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-21 08:44:26
- * @LastEditTime: 2021-07-04 19:18:06
+ * @LastEditTime: 2021-07-04 21:27:36
  * @Description:
 -->
 <template>
@@ -34,18 +34,7 @@
       </div>
       <div class="job-sec">
         <h3>在招职位</h3>
-        <ul class="jobs-list">
-          <li>
-            <div class="job-head">
-              <span>{{ '前端' }}</span>
-              <span class="addr">{{ '杭州' }}</span>
-            </div>
-            <div class="job-primary">
-              <span class="salary">{{ '150~200元/天' }}</span>
-              <span class="edu">{{ '大专' }}</span>
-            </div>
-          </li>
-        </ul>
+        <CompanyJobs :companyJobs="companyJobs" />
       </div>
     </div>
   </div>
@@ -53,24 +42,32 @@
 
 <script lang="ts">
 import { getCompanyInfoById } from '@/api/conpany'
+import { getAllJobsByCompanyId } from '@/api/job'
 import { CompanyColumn } from '@/store/modules/types'
 import { defineComponent, onMounted, shallowRef } from 'vue'
 import { useRoute } from 'vue-router'
+import CompanyJobs from './company-job.vue'
 
 export default defineComponent({
   name: 'CompanyDetail',
+  components: {
+    CompanyJobs,
+  },
   setup() {
     const route = useRoute()
     const id = route.params.id as string
     const companyDetail = shallowRef({} as CompanyColumn)
+    const companyJobs = shallowRef<any>({})
     onMounted(async () => {
       const { data } = await getCompanyInfoById(id)
-      console.log(data)
       companyDetail.value = data.message.companyInformationList[0]
-      console.log(companyDetail.value)
+      const { data: data1 } = await getAllJobsByCompanyId(id)
+      companyJobs.value = data1.message.companyPositionList
+      console.log(companyJobs.value)
     })
     return {
       companyDetail,
+      companyJobs,
     }
   },
 })
@@ -150,44 +147,6 @@ export default defineComponent({
       word-wrap: break-word;
       line-height: 30px;
       font-size: 15px;
-    }
-  }
-}
-
-.jobs-list {
-  li {
-    height: 70px;
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid #eee;
-    padding: 10px 0 4px 14px;
-    cursor: pointer;
-    margin-bottom: 15px;
-    &:hover {
-      box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-    }
-    .job-head {
-      font-size: 16px;
-      color: $primary-color;
-      line-height: 26px;
-      margin-bottom: 10px;
-      .addr {
-        margin-left: 15px;
-        &::after {
-          content: ']';
-        }
-        &::before {
-          content: '[';
-        }
-      }
-    }
-
-    .job-primary {
-      font-size: 16px;
-      .salary {
-        color: $red;
-        margin-right: 15px;
-      }
     }
   }
 }

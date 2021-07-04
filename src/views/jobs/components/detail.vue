@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-17 10:54:15
- * @LastEditTime: 2021-07-04 20:05:37
+ * @LastEditTime: 2021-07-04 21:57:50
  * @Description:
 -->
 
@@ -9,7 +9,7 @@
   <div class="job-detail-container wrapper">
     <div class="job-detail">
       <div class="job-header">
-        <span>{{ jobDetail.company }}</span>
+        <span>{{ jobDetail.positionName }}</span>
       </div>
       <div class="job-info">
         <span>杭州</span>
@@ -26,7 +26,7 @@
       </div>
 
       <div class="post-btn">
-        <el-button round type="primary">投递</el-button>
+        <el-button round type="primary" @click="delivery">投递</el-button>
       </div>
     </div>
     <div class="job-sider">
@@ -65,6 +65,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { getJobDetailById } from '@/api/job'
 import { getCompanyInfoById } from '@/api/conpany'
 import { CompanyColumn, JobsColumn } from '@/store/modules/types'
+import { ElMessage } from 'element-plus'
 
 export default defineComponent({
   name: 'JobsDetail',
@@ -77,6 +78,9 @@ export default defineComponent({
     const router = useRouter()
     const jobDetail = ref<JobsColumn>({} as JobsColumn)
     const companyInfo = ref<CompanyColumn>({} as CompanyColumn)
+    const delivery = () => {
+      ElMessage('功能尚未开发')
+    }
     onMounted(async () => {
       const { data } = await getJobDetailById(props.id as string)
       jobDetail.value = data.message.companyPositionList[0]
@@ -90,6 +94,7 @@ export default defineComponent({
       router,
       jobDetail,
       companyInfo,
+      delivery,
     }
   },
 })

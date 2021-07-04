@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-03 09:45:26
- * @LastEditTime: 2021-07-04 19:14:11
+ * @LastEditTime: 2021-07-04 20:23:25
  * @Description:
 -->
 
@@ -31,28 +31,22 @@
 </template>
 
 <script lang="ts">
-import { getAllCompanyList } from '@/api/conpany'
-import { defineComponent, onMounted, reactive, ref } from 'vue'
+import { CompanyColumn } from '@/store/modules/types'
+import { defineComponent, PropType } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'CompanyList',
+  props: {
+    companyList: {
+      type: Array as PropType<CompanyColumn[]>,
+    },
+  },
   setup() {
     const router = useRouter()
-    const page = reactive({
-      nowPage: 1,
-      sumPage: 30,
-      total: 0,
-    })
-    const companyList = ref([])
-    onMounted(async () => {
-      const { data } = await getAllCompanyList(page.nowPage, page.sumPage)
-      companyList.value = data.message.companyInformationList
-      console.log(companyList.value)
-    })
+
     return {
       router,
-      companyList,
     }
   },
 })

@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:49:02
- * @LastEditTime: 2021-07-03 18:11:29
+ * @LastEditTime: 2021-07-04 20:32:20
  * @Description:
 -->
 
@@ -10,17 +10,19 @@
     <div class="company-content">
       <el-input class="search" placeholder="请输入公司" v-model="searchValue">
         <template #append>
-          <el-button icon="el-icon-search"></el-button>
+          <el-button icon="el-icon-search" @click="saarchPost"></el-button>
         </template>
       </el-input>
-      <CompanyList />
+      <CompanyList :companyList="companyList" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, reactive, ref } from 'vue'
 import CompanyList from '@/components/company-list/index.vue'
+import { getAllCompanyBySearch, getAllCompanyList } from '@/api/conpany'
+import { CompanyColumn } from '@/store/modules/types'
 export const SELECT_KEYS = 'select_keys'
 export default defineComponent({
   name: 'Company',
@@ -29,23 +31,31 @@ export default defineComponent({
   },
   setup() {
     const searchValue = ref('')
-    const getSelectKeys: number = JSON.parse(
-      localStorage.getItem(SELECT_KEYS) as string
-    )
-    const selectedKey = ref(getSelectKeys || 1)
-    const clear = () => {
-      console.log('1')
+    const companyList = ref<CompanyColumn[]>([])
+    const page = reactive({
+      nowPage: 1,
+      sumPage: 30,
+      total: 0,
+    })
+    const saarchPost = async () => {
+      const { data } = await getAllCompanyBySearch(
+        searchValue.value,
+        page.nowPage,
+        page.sumPage
+      )
+      console.log(data.message)
+      companyList.value = data.message.companyInformationList
     }
-    const addrClick = (index: number) => {
-      selectedKey.value = index
-      localStorage.setItem(SELECT_KEYS, JSON.stringify(index))
-    }
+    onMounted(async () => {
+      const { data } = await getAllCompanyList(page.nowPage, page.sumPage)
+      companyList.value = data.message.companyInformationList
+      console.log(companyList.value)
+    })
 
     return {
-      selectedKey,
-      clear,
-      addrClick,
       searchValue,
+      companyList,
+      saarchPost,
     }
   },
 })

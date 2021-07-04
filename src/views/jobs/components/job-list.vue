@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-03 15:39:40
- * @LastEditTime: 2021-07-04 19:38:47
+ * @LastEditTime: 2021-07-04 21:42:37
  * @Description:
 -->
 
@@ -55,12 +55,14 @@
       </ul>
     </div>
   </template>
-  <template v-else> 抱歉，没有找到你想要得数据! </template>
+  <template v-else>
+    <el-empty description="暂无数据"></el-empty>
+  </template>
 </template>
 
 <script lang="ts">
 import { JobsColumn } from '@/store/modules/types'
-import { defineComponent, PropType, reactive, watch } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { useRouter } from 'vue-router'
 export default defineComponent({
   name: 'JobsList',

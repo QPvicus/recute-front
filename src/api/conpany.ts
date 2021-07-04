@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-07-01 10:10:29
- * @LastEditTime: 2021-07-03 08:56:45
+ * @LastEditTime: 2021-07-04 20:30:27
  * @Description:
  */
 
@@ -39,6 +39,29 @@ export const getAllCompanyList = (
 ) => {
   return request({
     url: '/show/companyShowPage',
+    method: 'POST',
+    data: {
+      keyWord,
+      nowPage,
+      sumPage,
+    },
+  })
+}
+
+/**
+ *  根据输入框得值搜素哦
+ * @param keyWord
+ * @param nowPage
+ * @param sumPage
+ * @returns
+ */
+export const getAllCompanyBySearch = (
+  keyWord: string,
+  nowPage: number,
+  sumPage: number
+) => {
+  return request({
+    url: '/show/companyNameShowPage',
     method: 'POST',
     data: {
       keyWord,
