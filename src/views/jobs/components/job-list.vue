@@ -1,78 +1,67 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-03 15:39:40
- * @LastEditTime: 2021-07-04 13:50:57
+ * @LastEditTime: 2021-07-04 19:38:47
  * @Description:
 -->
 
 <template>
-  <div class="job-box">
-    <ul class="job-list">
-      <template v-for="item in jobList" :key="item.id">
-        <li @click="routerTo(item.id, item.companyId)">
-          <div class="job-primary">
-            <div class="info-primary">
-              <div class="job-title ellipsis">
-                <span class="job-name">{{ item.positionName }}</span>
-                <span class="job-addr">杭州</span>
+  <template v-if="jobList.length > 0">
+    <div class="job-box">
+      <ul class="job-list">
+        <template v-for="item in jobList" :key="item.id">
+          <li @click="routerTo(item.id, item.companyId)">
+            <div class="job-primary">
+              <div class="info-primary">
+                <div class="job-title ellipsis">
+                  <span class="job-name">{{ item.positionName }}</span>
+                  <span class="job-addr">杭州</span>
+                </div>
+                <div class="job-limit">
+                  <span class="salary">{{ item.remuneration }}</span>
+                  <span>{{ item.education }}</span>
+                </div>
               </div>
-              <div class="job-limit">
-                <span class="salary">{{ item.remuneration }}</span>
-                <span>{{ item.education }}</span>
+              <div class="info-company">
+                <div class="company-text ellipsis">
+                  <h3>{{ item.company }}</h3>
+                  <p>
+                    {{ item.companytype }} <span class="line"></span>
+                    {{ item.scale }}
+                  </p>
+                </div>
+                <div class="company-logo">
+                  <el-avatar
+                    :size="55"
+                    :src="item.icon"
+                    shape="square"
+                    fit="fill"
+                  ></el-avatar>
+                </div>
               </div>
             </div>
-            <div class="info-company">
-              <div class="company-text ellipsis">
-                <h3>{{ item.company }}</h3>
-                <p>
-                  {{ item.companytype }} <span class="line"></span>
-                  {{ item.scale }}
-                </p>
+            <div class="job-footer">
+              <div class="tags ellipsis">
+                <template v-for="tag in item.classify.split(',')" :key="tag">
+                  <el-tag type="info" size="small">{{ tag }}</el-tag>
+                </template>
               </div>
-              <div class="company-logo">
-                <el-avatar
-                  :size="55"
-                  :src="item.icon"
-                  shape="square"
-                  fit="fill"
-                ></el-avatar>
+              <div class="company-desc ellipsis">
+                {{ item.safeguard }}
               </div>
             </div>
-          </div>
-          <div class="job-footer">
-            <div class="tags ellipsis">
-              <template v-for="tag in item.classify.split(',')" :key="tag">
-                <el-tag type="info" size="small">{{ tag }}</el-tag>
-              </template>
-            </div>
-            <div class="company-desc ellipsis">
-              {{ item.safeguard }}
-            </div>
-          </div>
-        </li>
-      </template>
-    </ul>
-  </div>
-  <div class="pagination">
-    <el-pagination
-      @current-change="currentChange"
-      background
-      :page-size="6"
-      layout="prev, pager, next"
-      :total="page.total"
-    >
-    </el-pagination>
-  </div>
+          </li>
+        </template>
+      </ul>
+    </div>
+  </template>
+  <template v-else> 抱歉，没有找到你想要得数据! </template>
 </template>
 
 <script lang="ts">
-import { GET_JOBS_DETAIL, GET_JOBS_LIST } from '@/store/constants'
 import { JobsColumn } from '@/store/modules/types'
-import { GlobalState } from '@/store/types'
-import { computed, defineComponent, onMounted, reactive, ref, watch } from 'vue'
+import { defineComponent, PropType, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-
 export default defineComponent({
   name: 'JobsList',
   props: {
@@ -80,27 +69,41 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    scale: {
+      type: String,
+      default: '',
+    },
+    salary: {
+      type: String,
+      default: '',
+    },
+    jobList: {
+      type: Array as PropType<JobsColumn[]>,
+    },
   },
   setup() {
     const router = useRouter()
-    const store = useStore<GlobalState>()
-    const page = reactive({
-      nowPage: 1,
-      sumPage: 6,
-      total: computed(() => store.state.jobs.total),
-    })
-    const currentChange = (index: number) => {
-      page.nowPage = index
-      store.dispatch(`jobs/${GET_JOBS_LIST}`, {
-        nowPage: page.nowPage,
-        sumPage: page.sumPage,
-      })
-    }
-    const jobList = computed(() => store.state.jobs.jobsList)
-    console.log(jobList.value, 'jobList')
+
+    // const currentChange = (index: number) => {
+    //   page.nowPage = index
+    //   const scale = props.scale
+    //   const salary = props.salary
+    //   const q = props.q
+    //   if (scale || salary || q) {
+    //     store.dispatch(`jobs/${GET_JOBS_SELECT}`, {
+    //       nowPage: page.nowPage,
+    //       sumPage: page.sumPage,
+    //       informationScaleKeyWord: scale,
+    //       positionRemunerationKeyWord: salary,
+    //     })
+    //   } else {
+    //     store.dispatch(`jobs/${GET_JOBS_LIST}`, {
+    //       nowPage: page.nowPage,
+    //       sumPage: page.sumPage,
+    //     })
+    //   }
+    // }
     const routerTo = (id: string, company_id: string) => {
-      localStorage.setItem('job_id', id)
-      localStorage.setItem('company_id', company_id)
       router.push({
         name: 'JobsDetail',
         params: {
@@ -111,23 +114,12 @@ export default defineComponent({
         },
       })
     }
-    // watch(() => )
-    onMounted(() => {
-      // getJobsDetail()
-      console.log(jobList.value)
-      if (!jobList.value.length) {
-        store.dispatch(`jobs/${GET_JOBS_LIST}`, {
-          nowPage: page.nowPage,
-          sumPage: page.sumPage,
-        })
-      }
-      console.log(jobList.value)
-    })
+    // function resetPage() {
+    //   page.sumPage = 6
+    //   page.nowPage = 1
+    // }
     return {
       router,
-      currentChange,
-      page,
-      jobList,
       routerTo,
     }
   },

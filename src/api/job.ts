@@ -23,3 +23,21 @@ export const getJobDetailById = (id: string, nowPage = 1, sumPage = 1) => {
     },
   })
 }
+
+export const getJobsListSearch = (
+  salary: string,
+  scale: string,
+  nowPage: number,
+  sumPage: number
+) => {
+  return request({
+    url: '/show/payFiltrateShowPage',
+    method: 'POST',
+    data: {
+      informationScaleKeyWord: scale,
+      positionRemunerationKeyWord: salary,
+      nowPage,
+      sumPage,
+    },
+  })
+}

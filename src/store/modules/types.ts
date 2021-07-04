@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-07-03 09:30:32
- * @LastEditTime: 2021-07-04 13:38:29
+ * @LastEditTime: 2021-07-04 18:44:05
  * @Description:
  */
 
@@ -9,6 +9,11 @@ export interface RectProps {
   nowPage: number
   sumPage: number
   keyword?: string
+}
+
+export interface RectScanProps extends RectProps {
+  informationScaleKeyWord: string
+  positionRemunerationKeyWord: string
 }
 
 export interface CompanyColumn {
@@ -33,5 +38,5 @@ export interface JobsColumn extends CompanyColumn {
   remuneration: string
   safeguard: string
   information: string
-  require: string
+  demand: string
 }

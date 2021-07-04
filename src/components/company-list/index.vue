@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-03 09:45:26
- * @LastEditTime: 2021-07-04 13:22:50
+ * @LastEditTime: 2021-07-04 19:14:11
  * @Description:
 -->
 
@@ -31,28 +31,24 @@
 </template>
 
 <script lang="ts">
-import { GET_COMPANY_LIST } from '@/store/constants'
-import { GlobalState } from '@/store/types'
-import { computed, defineComponent, onMounted, reactive } from 'vue'
+import { getAllCompanyList } from '@/api/conpany'
+import { defineComponent, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'CompanyList',
   setup() {
     const router = useRouter()
-    const store = useStore<GlobalState>()
     const page = reactive({
       nowPage: 1,
       sumPage: 30,
       total: 0,
     })
-    const companyList = computed(() => store.state.company.companyList)
-    onMounted(() => {
-      store.dispatch(`company/${GET_COMPANY_LIST}`, {
-        nowPage: page.nowPage,
-        sumPage: page.sumPage,
-      })
+    const companyList = ref([])
+    onMounted(async () => {
+      const { data } = await getAllCompanyList(page.nowPage, page.sumPage)
+      companyList.value = data.message.companyInformationList
+      console.log(companyList.value)
     })
     return {
       router,

@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:44:29
- * @LastEditTime: 2021-07-03 19:30:20
+ * @LastEditTime: 2021-07-04 20:04:29
  * @Description:
 -->
 
@@ -27,7 +27,7 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <el-dropdown @command="command1">
+      <el-dropdown @command="command2">
         <span class="el-dropdown-link">
           公司规模<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
@@ -42,12 +42,30 @@
         </template>
       </el-dropdown>
     </div>
-    <JobsDetail />
+    <JobsDetail :jobList="jobList" />
+    <div class="pagination">
+      <el-pagination
+        @current-change="currentChange"
+        background
+        :page-size="6"
+        layout="prev, pager, next"
+        :total="page.total"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs } from 'vue'
+import { getJobList, getJobsListSearch } from '@/api/job'
+import {
+  defineComponent,
+  onMounted,
+  reactive,
+  ref,
+  shallowRef,
+  toRefs,
+} from 'vue'
 import { useRouter } from 'vue-router'
 import JobsDetail from './components/job-list.vue'
 export default defineComponent({
@@ -63,36 +81,79 @@ export default defineComponent({
       scale: '',
     })
     const salary_list = [
-      { value: '不限', command: null },
+      { value: '不限', command: '' },
       { value: '2K以下', command: '2K以下' },
-      { value: '2K~3K', command: '2K~3K' },
-      { value: '3K~4K', command: '3K~4K' },
+      { value: '2-3K', command: '2-3K' },
+      { value: '3-4K', command: '3-4K' },
     ]
     const comany_scale_list = [
-      { value: '不限', command: null },
-      { value: '0-20人', command: '0-20人' },
-      { value: '20~99人', command: '20~99人' },
-      { value: '100~499人', command: '100~499人' },
-      { value: '500~999人', command: '500~999人' },
-      { value: '1000~9999人', command: '1000~9999人' },
-      { value: '10000人以上', command: '10000人以上' },
+      { value: '不限', command: '' },
+      { value: '0-49人', command: '0-49人' },
+      { value: '50-99人', command: '50-99人' },
+      { value: '100-499人', command: '100-499人' },
+      { value: '500以上人', command: '500以上人' },
     ]
+    const jobList = shallowRef([])
 
-    const command1 = (o: any) => {
-      console.log(o)
+    const command1 = (o: string) => {
+      state.salary = o
+      getJobsListByScreen()
+    }
+    const command2 = (o: string) => {
+      state.scale = o
+      getJobsListByScreen()
+    }
+    const page = reactive({
+      nowPage: 1,
+      sumPage: 6,
+      total: 5,
+    })
+    const currentChange = (index: number) => {
+      page.nowPage = index
+      // if ()
+      getJobAllList(searchValue.value)
+    }
+    function resetPage() {
+      page.sumPage = 6
+      page.nowPage = 1
     }
     const SearchPost = () => {
-      // getJobsDetail()
+      resetPage()
+      getJobAllList(searchValue.value)
     }
+    const getJobsListByScreen = async () => {
+      const { data } = await getJobsListSearch(
+        state.salary,
+        state.scale,
+        page.nowPage,
+        page.sumPage
+      )
+      console.log(state.salary, state.scale, page.nowPage, page.sumPage)
+      console.log(data)
+      jobList.value = data.message.positionVOList
+    }
+    const getJobAllList = async (value?: string) => {
+      const { data } = await getJobList(page.nowPage, page.sumPage, value)
+      jobList.value = data.message.positionVOList
+      page.total = data.message.cont
+      console.log(jobList.value)
+    }
+    onMounted(() => {
+      getJobAllList()
+    })
 
     return {
       searchValue,
       ...toRefs(state),
       command1,
+      command2,
       salary_list,
       comany_scale_list,
       router,
       SearchPost,
+      page,
+      currentChange,
+      jobList,
     }
   },
 })

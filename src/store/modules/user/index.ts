@@ -1,15 +1,15 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 19:05:38
- * @LastEditTime: 2021-07-01 10:41:31
+ * @LastEditTime: 2021-07-04 14:26:46
  * @Description:
  */
 
 const createState = () => {
   const state = {
-    id: '0a93d4c1-974e-4d12-aa29-a9e79d996beb',
-    username: '44',
-    token: '7e1321c9-9700-4f00-9241-57d85f379caf',
+    id: 'f2f0c1f0-da71-49ab-910e-5332c931b0b5',
+    username: '11',
+    token: '1bb82405-9eb3-4945-aa29-35a9100872d0',
   }
   return state
 }

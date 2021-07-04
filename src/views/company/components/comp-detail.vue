@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-21 08:44:26
- * @LastEditTime: 2021-07-04 13:28:17
+ * @LastEditTime: 2021-07-04 19:18:06
  * @Description:
 -->
 <template>
@@ -52,46 +52,23 @@
 </template>
 
 <script lang="ts">
-import { GET_COMPANY_DETAIL } from '@/store/constants'
-import { GlobalState } from '@/store/types'
-import {
-  computed,
-  defineComponent,
-  onBeforeUnmount,
-  onMounted,
-  unref,
-  watch,
-} from 'vue'
+import { getCompanyInfoById } from '@/api/conpany'
+import { CompanyColumn } from '@/store/modules/types'
+import { defineComponent, onMounted, shallowRef } from 'vue'
 import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'CompanyDetail',
   setup() {
     const route = useRoute()
-    const store = useStore<GlobalState>()
     const id = route.params.id as string
-    const companyDetail = computed(() =>
-      store.state.company.companyList.find((item) => item.id === id)
-    )
-    console.log(companyDetail.value)
-    watch(
-      () => id,
-      () => {
-        store.dispatch(`company/${GET_COMPANY_DETAIL}`, id)
-      },
-      { immediate: true }
-    )
-    onMounted(() => {
-      if (!unref(companyDetail)) {
-        store.dispatch(`company/${GET_COMPANY_DETAIL}`, id)
-      }
-      console.log('mounted')
+    const companyDetail = shallowRef({} as CompanyColumn)
+    onMounted(async () => {
+      const { data } = await getCompanyInfoById(id)
+      console.log(data)
+      companyDetail.value = data.message.companyInformationList[0]
+      console.log(companyDetail.value)
     })
-    onBeforeUnmount(() => {
-      sessionStorage.removeItem('comp_detail')
-    })
-
     return {
       companyDetail,
     }

@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-17 10:54:15
- * @LastEditTime: 2021-07-04 13:41:33
+ * @LastEditTime: 2021-07-04 20:05:37
  * @Description:
 -->
 
@@ -22,7 +22,7 @@
       </div>
       <div class="job-title">职位要求</div>
       <div class="job-content">
-        {{ jobDetail.require }}
+        {{ jobDetail.demand }}
       </div>
 
       <div class="post-btn">
@@ -43,7 +43,7 @@
         <router-link
           class="comp-name"
           target="_blank"
-          :to="`/company/detail/${company_id}`"
+          :to="`/detail/company/${company_id}`"
           >{{ companyInfo.company }}
         </router-link>
       </div>
@@ -60,19 +60,11 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onBeforeUnmount,
-  onMounted,
-  unref,
-  watch,
-} from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-import { GlobalState } from '@/store/types'
-import { GET_COMPANY_DETAIL, GET_JOBS_DETAIL } from '@/store/constants'
-import { useJobsStore } from '@/store1/modules/jobs'
+import { getJobDetailById } from '@/api/job'
+import { getCompanyInfoById } from '@/api/conpany'
+import { CompanyColumn, JobsColumn } from '@/store/modules/types'
 
 export default defineComponent({
   name: 'JobsDetail',
@@ -83,48 +75,21 @@ export default defineComponent({
   setup(props) {
     const route = useRoute()
     const router = useRouter()
-    const store = useStore<GlobalState>()
-    const store1 = useJobsStore()
-    // 解决 重复获取本地存得 JobDetail 不同id param 应该调用接口
-    const jobDetail = computed(() =>
-      store.state.jobs.jobsList.find((item) => item.id === props.id)
-    )
-    // const jobDetail = store1.jobDetail
-    const companyInfo = computed(() =>
-      store.state.jobs.jobsList.find(
-        (item) => item.companyId === props.company_id
+    const jobDetail = ref<JobsColumn>({} as JobsColumn)
+    const companyInfo = ref<CompanyColumn>({} as CompanyColumn)
+    onMounted(async () => {
+      const { data } = await getJobDetailById(props.id as string)
+      jobDetail.value = data.message.companyPositionList[0]
+      const { data: data1 } = await getCompanyInfoById(
+        props.company_id as string
       )
-    )
-    onMounted(() => {
-      if (!unref(jobDetail).id) {
-        store.dispatch(`jobs/${GET_JOBS_DETAIL}`, props.id)
-        // store1[GET_JOBS_DETAIL](props.company_id as string).then((res) => {
-        //   console.log(res)
-        // })
-      }
-      if (!unref(companyInfo)) {
-        store.dispatch(`company/${GET_COMPANY_DETAIL}`, props.company_id)
-      }
-    })
-    watch(
-      [() => props.id, () => props.company_id],
-      async ([id, company_id], [oldId, oldCompany_id]) => {
-        console.log('11')
-        store.dispatch(`jobs/${GET_JOBS_DETAIL}`, id)
-        store.dispatch(`company/${GET_COMPANY_DETAIL}`, company_id)
-      },
-      { immediate: true }
-    )
-    onBeforeUnmount(() => {
-      sessionStorage.removeItem('job_detail')
-      sessionStorage.removeItem('comp_detail')
+      companyInfo.value = data1.message.companyInformationList[0]
     })
     return {
       route,
       router,
       jobDetail,
       companyInfo,
-      // ...toRefs(state),
     }
   },
 })

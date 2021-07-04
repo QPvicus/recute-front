@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 19:25:32
- * @LastEditTime: 2021-07-03 19:14:33
+ * @LastEditTime: 2021-07-04 14:59:39
  * @Description:
  */
 
@@ -20,3 +20,4 @@ export const GET_COMPANY_DETAIL = 'getCompanyDetail'
 /** JOBS */
 export const GET_JOBS_LIST = 'getJobsList'
 export const GET_JOBS_DETAIL = 'getJobsDetail'
+export const GET_JOBS_SELECT = 'getJobsSelect'
