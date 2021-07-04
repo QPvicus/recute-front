@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 10:42:16
- * @LastEditTime: 2021-06-27 18:36:21
+ * @LastEditTime: 2021-07-03 18:29:04
  * @Description:
  */
 
@@ -12,6 +12,7 @@ import store from '@/store'
  */
 const instance = axios.create({
   baseURL: 'http://47.98.44.98:5253/Recruit',
+  timeout: 3000,
 })
 
 /**

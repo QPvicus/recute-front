@@ -1,22 +1,25 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-21 08:44:26
- * @LastEditTime: 2021-06-21 17:02:23
+ * @LastEditTime: 2021-07-04 13:28:17
  * @Description:
 -->
 <template>
   <div class="company-banner">
     <div class="company-info wrapper">
       <div class="company-logo">
-        <img
-          src="https://img.bosszhipin.com/beijin/mcs/bar/20191211/cff98890aeac18b0f4dee3577d92d543be1bd4a3bd2a63f070bdbdada9aad826.jpg?x-oss-process=image/resize,w_120,limit_0"
-          alt=""
-        />
+        <el-avatar
+          :src="companyDetail.icon"
+          :size="103"
+          shape="square"
+          fit="fill"
+        ></el-avatar>
       </div>
       <div class="info-primary sllipsis">
-        <p class="name">阿里巴巴</p>
+        <p class="name">{{ companyDetail.company }}</p>
         <p class="sign ellipsis">
-          {{ '10000人以上' }}<em class="dot"></em>{{ '互联网' }}
+          {{ companyDetail.scale }}<em class="dot"></em
+          >{{ companyDetail.companytype }}
         </p>
       </div>
     </div>
@@ -26,8 +29,7 @@
       <div class="job-sec">
         <h3>简介</h3>
         <div class="text">
-          阿里巴巴集团的使命是让天下没有难做的生意。
-          我们旨在赋能企业改变营销、销售和经营的方式。我们为商家、品牌及其他企业提供基本的互联网基础设施以及营销平台，让其可借助互联网的力量与用户和客户互动。我们的业务包括核心电商、云计算、数字媒体和娱乐以及创新项目和其他业务。我们并通过子公司菜鸟网络及所投资的关联公司口碑，参与物流和本地服务行业，同时与蚂蚁金融服务集团有战略合作，该金融服务集团主要通过中国领先的第三方网上支付平台支付宝运营。
+          {{ companyDetail.synopsis }}
         </div>
       </div>
       <div class="job-sec">
@@ -48,6 +50,54 @@
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import { GET_COMPANY_DETAIL } from '@/store/constants'
+import { GlobalState } from '@/store/types'
+import {
+  computed,
+  defineComponent,
+  onBeforeUnmount,
+  onMounted,
+  unref,
+  watch,
+} from 'vue'
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+
+export default defineComponent({
+  name: 'CompanyDetail',
+  setup() {
+    const route = useRoute()
+    const store = useStore<GlobalState>()
+    const id = route.params.id as string
+    const companyDetail = computed(() =>
+      store.state.company.companyList.find((item) => item.id === id)
+    )
+    console.log(companyDetail.value)
+    watch(
+      () => id,
+      () => {
+        store.dispatch(`company/${GET_COMPANY_DETAIL}`, id)
+      },
+      { immediate: true }
+    )
+    onMounted(() => {
+      if (!unref(companyDetail)) {
+        store.dispatch(`company/${GET_COMPANY_DETAIL}`, id)
+      }
+      console.log('mounted')
+    })
+    onBeforeUnmount(() => {
+      sessionStorage.removeItem('comp_detail')
+    })
+
+    return {
+      companyDetail,
+    }
+  },
+})
+</script>
 
 <style lang="scss" scoped>
 .company-banner {
@@ -162,6 +212,12 @@
         margin-right: 15px;
       }
     }
+  }
+}
+
+:deep(.el-avatar) {
+  img {
+    width: 100%;
   }
 }
 </style>

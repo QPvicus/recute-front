@@ -5,6 +5,7 @@
  * @Description:
  */
 
+import { CompanyState } from './modules/company'
 import { JobsState } from './modules/jobs'
 import { ResumeState } from './modules/resume'
 import { UserState } from './modules/user'
@@ -12,4 +13,5 @@ export type GlobalState = {
   resume: ResumeState
   user: UserState
   jobs: JobsState
+  company: CompanyState
 }

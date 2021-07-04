@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-12 17:50:35
- * @LastEditTime: 2021-06-13 13:40:58
+ * @LastEditTime: 2021-07-03 20:03:38
  * @Description:
  */
 
@@ -46,4 +46,13 @@ export function getOffsetTop(
     return getOffsetTop(relativeNode, node.offsetParent as HTMLElement, topSum)
   }
   return topSum
+}
+
+/**
+ * 处理数据
+ * @param info
+ * @returns
+ */
+export function stringToArr(info: string) {
+  return info.split('#')
 }

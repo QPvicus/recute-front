@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -19,9 +18,13 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/jobs/index.vue'),
       },
       {
-        path: '/jobs/detail/:id',
+        path: '/detail/jobs/:id',
         name: 'JobsDetail',
         component: () => import('@/views/jobs/components/detail.vue'),
+        props: (route) => ({
+          id: route.params.id,
+          company_id: route.query.company_id,
+        }),
       },
       {
         path: '/company',
@@ -29,7 +32,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/company/index.vue'),
       },
       {
-        path: '/company/detail/:id',
+        path: '/detail/company/:id',
         name: 'CompanyDetail',
         component: () => import('@/views/company/components/comp-detail.vue'),
       },
@@ -61,6 +64,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/error/test.vue'),
   },
   {
+    path: '/redirect',
+    name: 'RouterTransition',
+    component: () => import('@/views/redirect/index.vue'),
+  },
+  {
     path: '/:path*',
     name: 'NotFound',
     component: () => import('@/views/error/404.vue'),
@@ -70,9 +78,12 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHashHistory('/'),
   routes,
-  scrollBehavior: (to) => {
+  scrollBehavior: (to, from, savePosition) => {
+    if (savePosition) {
+      return savePosition
+    }
     // console.log(to, from, savedPosition)
-    if (to.fullPath === '/resume') {
+    if (to.fullPath === '/resume' || to.name === 'JobsDetail') {
       return { top: 0 }
     }
   },

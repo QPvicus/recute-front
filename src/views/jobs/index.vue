@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:44:29
- * @LastEditTime: 2021-07-02 18:29:05
+ * @LastEditTime: 2021-07-03 19:30:20
  * @Description:
 -->
 
@@ -9,31 +9,17 @@
   <div class="search-box wrapper">
     <el-input class="search" placeholder="请输入职位" v-model="searchValue">
       <template #append>
-        <el-button icon="el-icon-search"></el-button>
+        <el-button icon="el-icon-search" @click="SearchPost"></el-button>
       </template>
     </el-input>
     <div class="filter-search-box">
-      <el-dropdown @command="command">
-        <span class="el-dropdown-link">
-          学历要求<i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <template v-for="item in edu_list" :key="item.command">
-              <el-dropdown-item :command="item.command">{{
-                item.value
-              }}</el-dropdown-item>
-            </template>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
       <el-dropdown @command="command1">
         <span class="el-dropdown-link">
           薪资要求<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <template v-for="item in edu_list" :key="item.command">
+            <template v-for="item in salary_list" :key="item.command">
               <el-dropdown-item :command="item.command">{{
                 item.value
               }}</el-dropdown-item>
@@ -56,89 +42,26 @@
         </template>
       </el-dropdown>
     </div>
-    <div class="job-box">
-      <ul class="job-list">
-        <template v-for="item in jobList" :key="item.id">
-          <li
-            @click="
-              router.push(
-                `/jobs/detail/${item.id}?company_id=${item.companyId}`
-              )
-            "
-          >
-            <div class="job-primary">
-              <div class="info-primary">
-                <div class="job-title ellipsis">
-                  <span class="job-name">{{ item.positionName }}</span>
-                  <span class="job-addr">杭州</span>
-                </div>
-                <div class="job-limit">
-                  <span class="salary">{{ item.remuneration }}</span>
-                  <span>{{ item.education }}</span>
-                </div>
-              </div>
-              <div class="info-company">
-                <div class="company-text ellipsis">
-                  <h3>{{ item.company }}</h3>
-                  <p>
-                    {{ item.companytype }} <span class="line"></span>
-                    {{ item.scale }}
-                  </p>
-                </div>
-                <div class="company-logo">
-                  <img :src="item.icon" alt="" />
-                </div>
-              </div>
-            </div>
-            <div class="job-footer">
-              <div class="tags ellipsis">
-                <template v-for="tag in item.classify.split(',')" :key="tag">
-                  <el-tag type="info" size="small">{{ tag }}</el-tag>
-                </template>
-              </div>
-              <div class="company-desc ellipsis">
-                {{ item.safeguard }}
-              </div>
-            </div>
-          </li>
-        </template>
-      </ul>
-    </div>
-
-    <div class="pagination">
-      <el-pagination
-        @current-change="currentChange"
-        background
-        :page-size="6"
-        layout="prev, pager, next"
-        :total="page.total"
-      >
-      </el-pagination>
-    </div>
+    <JobsDetail />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
+import { defineComponent, reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
-import { getJobList } from '@/api/job'
-
+import JobsDetail from './components/job-list.vue'
 export default defineComponent({
   name: 'Jobs',
+  components: {
+    JobsDetail,
+  },
   setup() {
     const router = useRouter()
     const searchValue = ref('')
     const state = reactive({
-      education: '',
       salary: '',
       scale: '',
     })
-    const edu_list = [
-      { value: '不限', command: null },
-      { value: '本科', command: '本科' },
-      { value: '专科', command: '专科' },
-      { value: '其他', command: '其他' },
-    ]
     const salary_list = [
       { value: '不限', command: null },
       { value: '2K以下', command: '2K以下' },
@@ -154,44 +77,22 @@ export default defineComponent({
       { value: '1000~9999人', command: '1000~9999人' },
       { value: '10000人以上', command: '10000人以上' },
     ]
-    const page = reactive({
-      nowPage: 1,
-      sumPage: 6,
-      total: null,
-    })
-    const jobList = ref<any[]>([])
-    async function getJobsDetail() {
-      const { data } = await getJobList(page.nowPage, page.sumPage)
-      console.log(data)
-      jobList.value = [...data.message.positionVOList]
-      page.total = data.message.cont
-    }
-    const currentChange = (index: number) => {
-      console.log(index)
-      page.nowPage = index
-      getJobsDetail()
-    }
-    const command = (o: any) => {
-      console.log(o)
-    }
+
     const command1 = (o: any) => {
       console.log(o)
     }
-    onMounted(async () => {
-      await getJobsDetail()
-    })
+    const SearchPost = () => {
+      // getJobsDetail()
+    }
+
     return {
       searchValue,
       ...toRefs(state),
-      command,
       command1,
-      edu_list,
       salary_list,
       comany_scale_list,
-      currentChange,
       router,
-      page,
-      jobList,
+      SearchPost,
     }
   },
 })
