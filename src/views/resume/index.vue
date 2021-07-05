@@ -1,13 +1,13 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:16:26
- * @LastEditTime: 2021-07-04 22:09:18
+ * @LastEditTime: 2021-07-05 09:16:19
  * @Description:
 -->
 
 <template>
   <Header />
-  <div class="resume-page">
+  <!-- <div class="resume-page">
     <div class="banner"></div>
     <div class="profile-header">
       <div class="profile-header__left">
@@ -116,7 +116,7 @@
         </template>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script lang="ts">
@@ -137,15 +137,19 @@ export default defineComponent({
     const id = localStorage.getItem('user_id')
     const profileResume = shallowRef<any>({})
     const getProfileResume = async () => {
-      const { data } = await getProfileResumeById(id)
-      console.log(data)
-      const resume = data.message.studentResumeList[0]
-      console.log(resume)
-      if (resume == undefined) {
-        edit()
-      } else {
-        profileResume.value = resume
-        console.log(profileResume.value)
+      try {
+        const { data } = await getProfileResumeById(id)
+        console.log(data)
+        const resume = data.message.studentResumeList[0]
+        console.log(resume)
+        if (resume == undefined) {
+          edit()
+        } else {
+          profileResume.value = resume
+          console.log(profileResume.value)
+        }
+      } catch (er) {
+        console.log(er)
       }
     }
     onMounted(() => {

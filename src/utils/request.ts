@@ -1,12 +1,13 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 10:42:16
- * @LastEditTime: 2021-07-03 18:29:04
+ * @LastEditTime: 2021-07-05 10:12:36
  * @Description:
  */
 
 import axios from 'axios'
 import store from '@/store'
+import { ElMessage } from 'element-plus'
 /**
  *  @description 项目初始化
  */
@@ -43,7 +44,10 @@ instance.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       //  重定向 登录页面
     } else if (error.response.status === 500) {
-      // 服务器出错
+      ElMessage({
+        message: '服务器出错',
+        type: 'error',
+      })
     }
 
     return Promise.reject(error)

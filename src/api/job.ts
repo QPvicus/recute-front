@@ -64,3 +64,14 @@ export const getAllJobsByCompanyId = (
     },
   })
 }
+
+/**
+ * 根据最新时间排序职位
+ * @returns
+ */
+export const getNewJobs = () => {
+  return request({
+    url: '/show/timePositionShowPage',
+    method: 'POST',
+  })
+}

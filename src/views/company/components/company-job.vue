@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-04 21:20:08
- * @LastEditTime: 2021-07-04 21:39:37
+ * @LastEditTime: 2021-07-05 10:18:55
  * @Description:
 -->
 
@@ -9,7 +9,11 @@
   <template v-if="companyJobs.length > 0">
     <ul class="jobs-list">
       <template v-for="item in companyJobs" :key="item.id">
-        <li>
+        <li
+          @click="
+            router.push(`/detail/jobs/${item.id}?company_id=${companyId}`)
+          "
+        >
           <div class="job-head">
             <span>{{ item.positionName }}</span>
             <span class="addr">{{ '杭州' }}</span>
@@ -32,6 +36,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'CompanyJobs',
@@ -39,6 +44,15 @@ export default defineComponent({
     companyJobs: {
       type: Array as PropType<any[]>,
     },
+    companyId: {
+      type: String,
+    },
+  },
+  setup() {
+    const router = useRouter()
+    return {
+      router,
+    }
   },
 })
 </script>

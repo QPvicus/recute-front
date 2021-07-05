@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:18:59
- * @LastEditTime: 2021-06-30 18:13:31
+ * @LastEditTime: 2021-07-05 09:44:07
  * @Description:
 -->
 
@@ -235,7 +235,7 @@ import {
   onMounted,
   reactive,
   ref,
-  toRaw,
+  shallowRef,
   toRefs,
   unref,
 } from 'vue'
@@ -244,11 +244,7 @@ import { getOffsetTop, validatorEmail, validatorMobile } from '@/utils'
 import { throttle } from 'lodash-es'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { useStore } from 'vuex'
-import { GlobalState } from '@/store/types'
-import { RESUME_EDIT } from '@/store/constants'
-import { EditData } from '@/api/resume'
-import { getProfileResume } from './getProfileResume'
+import { addEditResume, EditData, getProfileResumeById } from '@/api/resume'
 import { ResumeState } from '@/store/modules/resume'
 export default defineComponent({
   name: 'ResumeEditor',
@@ -257,7 +253,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
-    const store = useStore<GlobalState>()
+    // const store = useStore<GlobalState>()
     const selfEvaluationShow = ref(false)
     const SkillsShow = ref(false)
     const certificateShow = ref(false)
@@ -276,9 +272,12 @@ export default defineComponent({
     nextTick(() => {
       onPageScroll()
     })
-    const profileResume = store.getters['resume/getResume'] as ResumeState
+    // const profileResume = store.getters['resume/getResume'] as ResumeState
+
+    const profileResume = shallowRef({} as ResumeState)
     // 此处写法不明智  实际上可以 用 vuex state 来代替
     function setProfileResume() {
+      console.log(profileResume, 'profileResume')
       const {
         name,
         age,
@@ -291,18 +290,19 @@ export default defineComponent({
         specialty,
         certificate,
         selfevaluation,
-      } = profileResume
-      state.resume_info.name = name
-      state.resume_info.age = age
-      state.resume_info.email = email
-      state.resume_info.gender = gender
-      state.resume_info.mobile_number = telephone
-      state.resume_edu.school = school
-      state.resume_edu.education = educational
-      state.resume_edu.major = major
-      state.resume_skill = specialty
-      state.resume_certificate = certificate
-      state.resume_self = selfevaluation
+      } = unref(profileResume)
+      state.resume_info.name = name || state.resume_info.name
+      state.resume_info.age = age || state.resume_info.age
+      state.resume_info.email = email || state.resume_info.email
+      state.resume_info.gender = gender || state.resume_info.gender
+      state.resume_info.mobile_number =
+        telephone || state.resume_info.mobile_number
+      state.resume_edu.school = school || state.resume_edu.school
+      state.resume_edu.education = educational || state.resume_edu.education
+      state.resume_edu.major = major || state.resume_edu.major
+      state.resume_skill = specialty || state.resume_skill
+      state.resume_certificate = certificate || state.resume_certificate
+      state.resume_self = selfevaluation || state.resume_self
     }
     // 此处写法不明智
     const state = reactive({
@@ -366,14 +366,8 @@ export default defineComponent({
     })
     const resumeInfoRef = ref<HTMLElement>()
     const resumeEduRef = ref<HTMLElement>()
+    const id = localStorage.getItem('user_id')
     const onPageScroll = () => {
-      // console.log(footerAction.value?.offsetHeight, 'offsetHeight')
-      // console.log(footerAction.value?.offsetTop, 'offsetTop')
-      // console.log(footerAction.value?.scrollHeight, 'scrollHeight')
-      // console.log(document.body.scrollHeight)
-      // console.log(document.body.scrollTop)
-      // footerActionFixed.value =
-      //   window.screenY < footerActionFixedShouleThres.value - window.innerHeight
       footerActionFixed.value =
         window.scrollY <
         footerActionFixedShouleThres.value - window.innerHeight - 80
@@ -391,36 +385,47 @@ export default defineComponent({
             resume_edu,
             resume_self: selfevaluation,
             resume_certificate: certificate,
-          } = toRaw(state)
+          } = toRefs(state)
           const {
             name,
             mobile_number: telephone,
             email,
             gender,
             age,
-          } = resume_info
-          const { school, education: educational, major } = resume_edu
-          const data: EditData = {
+          } = resume_info.value
+          const { school, education: educational, major } = resume_edu.value
+          const data: EditData & { id: string } = {
             name,
             gender,
             age,
             email,
             telephone,
-            selfevaluation,
+            selfevaluation: selfevaluation.value,
             school,
-            specialty,
+            specialty: specialty.value,
             educational,
-            certificate,
+            certificate: certificate.value,
             major,
+            id,
           }
           console.log(data)
-          store.dispatch(`resume/${RESUME_EDIT}`, data).then((data) => {
-            // console.log(data)
-            ElMessage.success(data.message)
-            setTimeout(() => {
-              router.replace('/resume')
-            }, 500)
-          })
+          addEditResume(data)
+            .then((res) => {
+              console.log(res)
+              ElMessage({
+                message: res.data.message,
+                type: 'success',
+              })
+              // setTimeout(() => {
+              //   router.push('/resume')
+              // }, 500)
+            })
+            .catch(() => {
+              ElMessage({
+                message: '保存简历失败',
+                type: 'error',
+              })
+            })
         })
         .catch(() => {
           ElMessage({
@@ -436,10 +441,24 @@ export default defineComponent({
         path: '/resume',
       })
     }
-    onMounted(() => {
+    onMounted(async () => {
       window.addEventListener('scroll', throttle(onPageScroll, 80))
-      getProfileResume()
-      setProfileResume()
+      // getProfileResume()
+      try {
+        const { data } = await getProfileResumeById(id)
+        //  console.log(res)
+        const profile = data.message.studentResumeList[0]
+        console.log(profile)
+        if (profile) {
+          profileResume.value = profile
+        }
+        setProfileResume()
+      } catch (err) {
+        ElMessage({
+          message: '接口错误',
+          type: 'error',
+        })
+      }
     })
     return {
       ...toRefs(state),

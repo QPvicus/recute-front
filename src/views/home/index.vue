@@ -8,84 +8,28 @@
       "
     >
       <div class="search-container margin-auto">
-        <el-cascader
-          v-model="cascader"
-          :options="options"
-          :props="{ expandTrigger: 'hover' }"
-          @change="handleChange"
-          placeholder="职位类型"
-        ></el-cascader>
-        <el-input placeholder="搜索职位或公司" v-model="input3">
+        <el-input placeholder="搜索职位" v-model="input3">
           <template #append>
             <el-button type="primary">搜索</el-button>
           </template>
         </el-input>
       </div>
-      <div class="search-hot margin-auto">
-        <span>热门职位</span>
-        <a>web前端</a>
-        <a>web前端</a>
-        <a>web前端</a>
-        <a>web前端</a>
-      </div>
+      <div class="search-hot margin-auto"></div>
     </div>
-    <!--   <div class="home-box">
-      <SiderMenu />
-      <el-carousel class="home-carousel">
-        <el-carousel-item v-for="item in 4" :key="item">
-          <img style="width: 100%; height: 100%" src="@/assets/1.jpg" alt="" />
-        </el-carousel-item>
-      </el-carousel>
-    </div> -->
     <div class="classification-box">
-      <div class="cla-item">
-        <p class="title">互联网</p>
-        <a target="_blank" href="/#/jobs">
-          <span>前端开发</span>
-        </a>
-        <a target="_blank" href="/#/jobs">
-          <span>前端开发</span>
-        </a>
-        <a target="_blank" href="/#/jobs">
-          <span>前端开发</span>
-        </a>
-      </div>
-      <div class="cla-item">
-        <p class="title">互联网</p>
-        <a target="_blank" href="/#/jobs">
-          <span>前端开发</span>
-        </a>
-        <a target="_blank" href="/#/jobs">
-          <span>前端开发</span>
-        </a>
-        <a target="_blank" href="/#/jobs">
-          <span>前端开发</span>
-        </a>
-      </div>
-      <div class="cla-item">
-        <p class="title">互联网</p>
-        <a target="_blank" href="/#/jobs">
-          <span>前端开发</span>
-        </a>
-        <a target="_blank" href="/#/jobs">
-          <span>前端开发</span>
-        </a>
-        <a target="_blank" href="/#/jobs">
-          <span>前端开发</span>
-        </a>
-      </div>
-      <div class="cla-item">
-        <p class="title">互联网</p>
-        <a target="_blank" href="/#/jobs">
-          <span>前端开发</span>
-        </a>
-        <a target="_blank" href="/#/jobs">
-          <span>前端开发</span>
-        </a>
-        <a target="_blank" href="/#/jobs">
-          <span>前端开发</span>
-        </a>
-      </div>
+      <template
+        v-for="(item, index) in ['后端开发', '前端开发', '测试', '设计']"
+        :key="item"
+      >
+        <div class="cla-item">
+          <p class="title">{{ item }}</p>
+          <template v-for="cate in categoryJson[index]" :key="cate">
+            <a target="_blank" :href="`/#/jobs?ka=${cate}`">
+              <span>{{ cate }}</span>
+            </a>
+          </template>
+        </div>
+      </template>
     </div>
     <div class="advertisement">
       <img
@@ -108,305 +52,78 @@
       />
     </div>
     <div class="common-box">
-      <PostCard />
-      <PostCard />
-      <PostCard />
+      <PostCard :post="newJobsData" title="最新职位" />
+      <div class="recom-company">
+        <div class="title">公司推荐</div>
+        <CompanyList :company-list="recommendCompany" />
+      </div>
     </div>
   </div>
-  <div class="footer">xxx</div>
+  <div class="footer"></div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs } from 'vue'
-// import SiderMenu from '@/components/sider/SiderMenu.vue'
+import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
 import PostCard from '@/components/post-card/index.vue'
+import CompanyList from '@/components/company-list/index.vue'
+import { getAllCompanyList } from '@/api/conpany'
+import { CompanyColumn, JobsColumn } from '@/store/modules/types'
+import { getNewJobs } from '@/api/job'
+import { ElMessage } from 'element-plus'
 export default defineComponent({
   name: 'Home',
   components: {
     // SiderMenu,
     PostCard,
+    CompanyList,
   },
   setup() {
     const input3 = ref('')
     const state = reactive({
       cascader: [],
-      options: [
-        {
-          cascader: 'zhinan',
-          label: '指南',
-          children: [
-            {
-              value: 'shejiyuanze',
-              label: '设计原则',
-              children: [
-                {
-                  value: 'yizhi',
-                  label: '一致',
-                },
-                {
-                  value: 'fankui',
-                  label: '反馈',
-                },
-                {
-                  value: 'xiaolv',
-                  label: '效率',
-                },
-                {
-                  value: 'kekong',
-                  label: '可控',
-                },
-              ],
-            },
-            {
-              value: 'daohang',
-              label: '导航',
-              children: [
-                {
-                  value: 'cexiangdaohang',
-                  label: '侧向导航',
-                },
-                {
-                  value: 'dingbudaohang',
-                  label: '顶部导航',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          value: 'zujian',
-          label: '组件',
-          children: [
-            {
-              value: 'basic',
-              label: 'Basic',
-              children: [
-                {
-                  value: 'layout',
-                  label: 'Layout 布局',
-                },
-                {
-                  value: 'color',
-                  label: 'Color 色彩',
-                },
-                {
-                  value: 'typography',
-                  label: 'Typography 字体',
-                },
-                {
-                  value: 'icon',
-                  label: 'Icon 图标',
-                },
-                {
-                  value: 'button',
-                  label: 'Button 按钮',
-                },
-              ],
-            },
-            {
-              value: 'form',
-              label: 'Form',
-              children: [
-                {
-                  value: 'radio',
-                  label: 'Radio 单选框',
-                },
-                {
-                  value: 'checkbox',
-                  label: 'Checkbox 多选框',
-                },
-                {
-                  value: 'input',
-                  label: 'Input 输入框',
-                },
-                {
-                  value: 'input-number',
-                  label: 'InputNumber 计数器',
-                },
-                {
-                  value: 'select',
-                  label: 'Select 选择器',
-                },
-                {
-                  value: 'cascader',
-                  label: 'Cascader 级联选择器',
-                },
-                {
-                  value: 'switch',
-                  label: 'Switch 开关',
-                },
-                {
-                  value: 'slider',
-                  label: 'Slider 滑块',
-                },
-                {
-                  value: 'time-picker',
-                  label: 'TimePicker 时间选择器',
-                },
-                {
-                  value: 'date-picker',
-                  label: 'DatePicker 日期选择器',
-                },
-                {
-                  value: 'datetime-picker',
-                  label: 'DateTimePicker 日期时间选择器',
-                },
-                {
-                  value: 'upload',
-                  label: 'Upload 上传',
-                },
-                {
-                  value: 'rate',
-                  label: 'Rate 评分',
-                },
-                {
-                  value: 'form',
-                  label: 'Form 表单',
-                },
-              ],
-            },
-            {
-              value: 'data',
-              label: 'Data',
-              children: [
-                {
-                  value: 'table',
-                  label: 'Table 表格',
-                },
-                {
-                  value: 'tag',
-                  label: 'Tag 标签',
-                },
-                {
-                  value: 'progress',
-                  label: 'Progress 进度条',
-                },
-                {
-                  value: 'tree',
-                  label: 'Tree 树形控件',
-                },
-                {
-                  value: 'pagination',
-                  label: 'Pagination 分页',
-                },
-                {
-                  value: 'badge',
-                  label: 'Badge 标记',
-                },
-              ],
-            },
-            {
-              value: 'notice',
-              label: 'Notice',
-              children: [
-                {
-                  value: 'alert',
-                  label: 'Alert 警告',
-                },
-                {
-                  value: 'loading',
-                  label: 'Loading 加载',
-                },
-                {
-                  value: 'message',
-                  label: 'Message 消息提示',
-                },
-                {
-                  value: 'message-box',
-                  label: 'MessageBox 弹框',
-                },
-                {
-                  value: 'notification',
-                  label: 'Notification 通知',
-                },
-              ],
-            },
-            {
-              value: 'navigation',
-              label: 'Navigation',
-              children: [
-                {
-                  value: 'menu',
-                  label: 'NavMenu 导航菜单',
-                },
-                {
-                  value: 'tabs',
-                  label: 'Tabs 标签页',
-                },
-                {
-                  value: 'breadcrumb',
-                  label: 'Breadcrumb 面包屑',
-                },
-                {
-                  value: 'dropdown',
-                  label: 'Dropdown 下拉菜单',
-                },
-                {
-                  value: 'steps',
-                  label: 'Steps 步骤条',
-                },
-              ],
-            },
-            {
-              value: 'others',
-              label: 'Others',
-              children: [
-                {
-                  value: 'dialog',
-                  label: 'Dialog 对话框',
-                },
-                {
-                  value: 'tooltip',
-                  label: 'Tooltip 文字提示',
-                },
-                {
-                  value: 'popover',
-                  label: 'Popover 弹出框',
-                },
-                {
-                  value: 'card',
-                  label: 'Card 卡片',
-                },
-                {
-                  value: 'carousel',
-                  label: 'Carousel 走马灯',
-                },
-                {
-                  value: 'collapse',
-                  label: 'Collapse 折叠面板',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          value: 'ziyuan',
-          label: '资源',
-          children: [
-            {
-              value: 'axure',
-              label: 'Axure Components',
-            },
-            {
-              value: 'sketch',
-              label: 'Sketch Templates',
-            },
-            {
-              value: 'jiaohu',
-              label: '组件交互文档',
-            },
-          ],
-        },
-      ],
     })
+    const categoryJson = [
+      ['Java', 'Python', 'C++'],
+      ['Html5', 'CSS', 'Javascript'],
+      ['功能测试', '后端测试', '自动化测试'],
+      ['PhotoShop', '美工', 'UI设计'],
+    ]
 
     const handleChange = (value: unknown[]) => {
       console.log(value)
     }
+    const newJobsData = ref([] as JobsColumn[])
+    const recommendCompany = ref([] as CompanyColumn[])
+    // const fetchData = async () => {
+    //   try {
+    //     const { data } = await getAllCompanyList(1,6)
+    //   } catch (err) {
+
+    //   }
+    // }
+    const fetchData = async () => {
+      try {
+        const { data } = await getNewJobs()
+        const { data: data1 } = await getAllCompanyList(1, 8)
+        newJobsData.value = data.message.positionVOList
+        recommendCompany.value = data1.message.companyInformationList
+      } catch (err) {
+        ElMessage({
+          message: '接口错误',
+          type: 'error',
+        })
+      }
+    }
+    onMounted(() => {
+      fetchData()
+    })
     return {
       input3,
       ...toRefs(state),
       handleChange,
+      newJobsData,
+      recommendCompany,
+      categoryJson,
     }
   },
 })
@@ -457,14 +174,11 @@ export default defineComponent({
     }
     .title {
       max-width: 120px;
-      color: #333;
+      color: $primary-color;
       font-size: 16px;
       margin-bottom: 22px;
       text-align: center;
       cursor: pointer;
-      &:hover {
-        color: $primary-color;
-      }
     }
     a {
       line-height: 20px;
@@ -494,6 +208,27 @@ export default defineComponent({
 }
 .common-box {
   margin-top: 37px;
+}
+.recom-company {
+  width: 103%;
+  .title {
+    font-size: 24px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 24px;
+    color: #414a60;
+    font-weight: bold;
+    &::before,
+    &::after {
+      content: '';
+      display: inline-block;
+      margin: 0 10px;
+      width: 50px;
+      height: 1px;
+      vertical-align: middle;
+      background-color: #d1d4db;
+    }
+  }
 }
 :deep(.el-cascader) {
   width: 109px;

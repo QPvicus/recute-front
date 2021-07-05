@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-21 08:44:26
- * @LastEditTime: 2021-07-04 21:27:36
+ * @LastEditTime: 2021-07-05 10:18:05
  * @Description:
 -->
 <template>
@@ -34,7 +34,7 @@
       </div>
       <div class="job-sec">
         <h3>在招职位</h3>
-        <CompanyJobs :companyJobs="companyJobs" />
+        <CompanyJobs :companyJobs="companyJobs" :companyId="id" />
       </div>
     </div>
   </div>
@@ -68,6 +68,7 @@ export default defineComponent({
     return {
       companyDetail,
       companyJobs,
+      id,
     }
   },
 })

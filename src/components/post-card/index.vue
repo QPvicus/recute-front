@@ -1,40 +1,35 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-11 18:36:30
- * @LastEditTime: 2021-06-22 21:52:34
+ * @LastEditTime: 2021-07-05 19:00:33
  * @Description:
 -->
 
 <template>
   <div class="post-card">
-    <div class="post-title">职位推荐</div>
+    <div class="post-title">{{ title }}</div>
     <ul class="post-list">
-      <template v-for="item in 6" :key="item">
-        <li class="post-list-item" shadow="hover" @click="goJobById(item)">
+      <template v-for="item in post.slice(0, 6)" :key="item.id">
+        <li class="post-list-item" shadow="hover" @click="goJobById(item.id)">
           <div class="post-li">
             <a class="job_info">
               <div class="job_info--top">
-                <p class="name ellipsis">Java</p>
+                <p class="name ellipsis">{{ item.positionName }}</p>
                 <i class="iconfont icon-dialog"></i>
-                <p class="salary">25-50K·16薪</p>
+                <p class="salary">{{ item.remuneration }}</p>
               </div>
               <p class="job-text ellipsis">
                 {{ '杭州' }}
                 <span class="line"></span>
-                {{ '1-3年' }}
-                <span class="line"></span>
-                {{ '本科' }}
+                {{ item.education }}
               </p>
             </a>
             <div class="job_info_bottom">
               <div class="company-avatar">
-                <img
-                  src="https://img.bosszhipin.com/beijin/images/image/86cbce235956aa27bb8658f6f4ff3a58-e349e6c67afab2daDsbsDksjx-v73MzhBg~~.png"
-                  alt=""
-                />
+                <img :src="item.icon" alt="" />
               </div>
-              <span class="company ellipsis">邦妮牛</span>
-              <span class="address">杭州·余杭区·仓前</span>
+              <span class="company ellipsis">{{ item.company }}</span>
+              <span class="address">杭州</span>
             </div>
           </div>
         </li>
@@ -44,14 +39,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'PostCard',
-  setup() {
+  props: {
+    post: {
+      type: Array as PropType<any[]>,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+  setup(props) {
     const router = useRouter()
-    const goJobById = (id: number) => {
+    console.log(props.post)
+    const goJobById = (id: string) => {
       router.push({
         name: 'JobsDetail',
         params: {

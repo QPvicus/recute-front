@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-03 15:39:40
- * @LastEditTime: 2021-07-04 21:42:37
+ * @LastEditTime: 2021-07-05 10:48:47
  * @Description:
 -->
 
@@ -85,26 +85,6 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
-
-    // const currentChange = (index: number) => {
-    //   page.nowPage = index
-    //   const scale = props.scale
-    //   const salary = props.salary
-    //   const q = props.q
-    //   if (scale || salary || q) {
-    //     store.dispatch(`jobs/${GET_JOBS_SELECT}`, {
-    //       nowPage: page.nowPage,
-    //       sumPage: page.sumPage,
-    //       informationScaleKeyWord: scale,
-    //       positionRemunerationKeyWord: salary,
-    //     })
-    //   } else {
-    //     store.dispatch(`jobs/${GET_JOBS_LIST}`, {
-    //       nowPage: page.nowPage,
-    //       sumPage: page.sumPage,
-    //     })
-    //   }
-    // }
     const routerTo = (id: string, company_id: string) => {
       router.push({
         name: 'JobsDetail',
@@ -116,10 +96,6 @@ export default defineComponent({
         },
       })
     }
-    // function resetPage() {
-    //   page.sumPage = 6
-    //   page.nowPage = 1
-    // }
     return {
       router,
       routerTo,

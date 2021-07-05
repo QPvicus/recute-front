@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:44:29
- * @LastEditTime: 2021-07-04 20:04:29
+ * @LastEditTime: 2021-07-05 20:02:02
  * @Description:
 -->
 
@@ -66,7 +66,7 @@ import {
   shallowRef,
   toRefs,
 } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import JobsDetail from './components/job-list.vue'
 export default defineComponent({
   name: 'Jobs',
@@ -75,6 +75,8 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
+    const route = useRoute()
+    console.log(route)
     const searchValue = ref('')
     const state = reactive({
       salary: '',
