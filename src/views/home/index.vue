@@ -83,7 +83,7 @@ export default defineComponent({
       cascader: [],
     })
     const categoryJson = [
-      ['Java', 'Python', 'C++'],
+      ['Java', 'Python', 'SpringBoot'],
       ['Html5', 'CSS', 'Javascript'],
       ['功能测试', '后端测试', '自动化测试'],
       ['PhotoShop', '美工', 'UI设计'],
@@ -94,13 +94,6 @@ export default defineComponent({
     }
     const newJobsData = ref([] as JobsColumn[])
     const recommendCompany = ref([] as CompanyColumn[])
-    // const fetchData = async () => {
-    //   try {
-    //     const { data } = await getAllCompanyList(1,6)
-    //   } catch (err) {
-
-    //   }
-    // }
     const fetchData = async () => {
       try {
         const { data } = await getNewJobs()

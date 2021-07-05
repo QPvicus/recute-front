@@ -75,3 +75,26 @@ export const getNewJobs = () => {
     method: 'POST',
   })
 }
+
+/**
+ * 根据类别搜索 职位列表
+ * @param nowPage
+ * @param sumPage
+ * @param keyWord
+ * @returns
+ */
+export const getAllJobsByCate = (
+  nowPage: number,
+  sumPage: number,
+  keyWord = ''
+) => {
+  return request({
+    url: '/show/homeFiltrateShowPage',
+    method: 'POST',
+    data: {
+      keyWord,
+      nowPage,
+      sumPage,
+    },
+  })
+}

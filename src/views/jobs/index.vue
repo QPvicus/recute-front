@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:44:29
- * @LastEditTime: 2021-07-05 20:02:02
+ * @LastEditTime: 2021-07-05 20:40:12
  * @Description:
 -->
 
@@ -57,7 +57,8 @@
 </template>
 
 <script lang="ts">
-import { getJobList, getJobsListSearch } from '@/api/job'
+import { getAllJobsByCate, getJobList, getJobsListSearch } from '@/api/job'
+import { ElMessage } from 'element-plus'
 import {
   defineComponent,
   onMounted,
@@ -112,8 +113,16 @@ export default defineComponent({
     })
     const currentChange = (index: number) => {
       page.nowPage = index
-      // if ()
-      getJobAllList(searchValue.value)
+      console.log(route.query)
+      console.log(Object.keys(route.query))
+      const queryList = Object.keys(route.query)
+      if (queryList.includes('q')) {
+        getJobAllList(searchValue.value)
+      } else if (queryList.includes('ka')) {
+        getJobAllList()
+      } else if (queryList.includes('salary') || queryList.includes('scale')) {
+        getJobsListByScreen()
+      }
     }
     function resetPage() {
       page.sumPage = 6
@@ -121,24 +130,53 @@ export default defineComponent({
     }
     const SearchPost = () => {
       resetPage()
-      getJobAllList(searchValue.value)
+      router.replace(`/jobs?q=${searchValue.value}`).then(() => {
+        getJobAllList(searchValue.value)
+      })
     }
-    const getJobsListByScreen = async () => {
-      const { data } = await getJobsListSearch(
-        state.salary,
-        state.scale,
-        page.nowPage,
-        page.sumPage
-      )
-      console.log(state.salary, state.scale, page.nowPage, page.sumPage)
-      console.log(data)
-      jobList.value = data.message.positionVOList
+    /**
+     * 根据筛选条件搜索
+     */
+    const getJobsListByScreen = () => {
+      let urlStr = '/jobs?'
+      if (state.salary && state.scale) {
+        urlStr += `salary=${state.salary}&scale=${state.scale}`
+      } else if (state.salary) {
+        urlStr += `salary=${state.salary}&scale=${state.scale}`
+      } else if (state.scale) {
+        urlStr += `scale=${state.scale}`
+      }
+      router.replace(urlStr).then(async () => {
+        try {
+          resetPage()
+          const { data } = await getJobsListSearch(
+            state.salary,
+            state.scale,
+            page.nowPage,
+            page.sumPage
+          )
+          console.log(state.salary, state.scale, page.nowPage, page.sumPage)
+          console.log(data)
+          jobList.value = data.message.positionVOList
+        } catch {
+          ElMessage({
+            message: '接口错误',
+            type: 'error',
+          })
+        }
+      })
     }
     const getJobAllList = async (value?: string) => {
-      const { data } = await getJobList(page.nowPage, page.sumPage, value)
-      jobList.value = data.message.positionVOList
-      page.total = data.message.cont
-      console.log(jobList.value)
+      const ka = route.query.ka as string
+      if (ka) {
+        const { data } = await getAllJobsByCate(page.nowPage, page.sumPage, ka)
+        jobList.value = data.message.positionVOList
+      } else {
+        const { data } = await getJobList(page.nowPage, page.sumPage, value)
+        jobList.value = data.message.positionVOList
+        page.total = data.message.cont
+        console.log(jobList.value)
+      }
     }
     onMounted(() => {
       getJobAllList()
