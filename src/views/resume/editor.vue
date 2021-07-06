@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:18:59
- * @LastEditTime: 2021-07-06 18:02:56
+ * @LastEditTime: 2021-07-06 22:51:19
  * @Description:
 -->
 
@@ -321,7 +321,7 @@ export default defineComponent({
       resume_certificate: '',
       resume_self: '',
     })
-    const education = ref([
+    const education = [
       {
         value: '大专',
         label: '大专',
@@ -334,7 +334,7 @@ export default defineComponent({
         value: '其他',
         label: '其他',
       },
-    ])
+    ]
     const rules = reactive({
       resume_info: {
         name: [{ required: true, message: '名字不能为空', trigger: 'blur' }],

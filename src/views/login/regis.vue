@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-06 20:14:37
- * @LastEditTime: 2021-07-06 22:12:39
+ * @LastEditTime: 2021-07-06 22:47:33
  * @Description:
 -->
 <template>
@@ -76,11 +76,11 @@ export default defineComponent({
     const router = useRouter()
     const formRefs = ref<HTMLElement>()
     const form = reactive<UserData>({
-      username: '33',
-      password: '11',
+      username: '',
+      password: '',
       role: '0',
-      email: '2396767095@qq.com',
-      telephone: '13',
+      email: '',
+      telephone: '',
       code: '',
     })
     const rules = {
