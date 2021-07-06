@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-06 20:14:37
- * @LastEditTime: 2021-07-06 21:17:22
+ * @LastEditTime: 2021-07-06 22:12:39
  * @Description:
 -->
 <template>
@@ -9,7 +9,7 @@
     <div class="login-container">
       <div class="head">
         <div class="name">
-          <div class="title">大学生招聘平台</div>
+          <div class="title">大学生招聘平台注册</div>
         </div>
       </div>
       <div class="login-form">

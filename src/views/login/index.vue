@@ -1,15 +1,14 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:25:54
- * @LastEditTime: 2021-07-06 21:48:58
+ * @LastEditTime: 2021-07-06 22:13:50
  * @Description:
 -->
 
 <template>
   <div class="box">
     <el-card>
-      <br />
-      <br />
+      <div class="header">大学生招聘平台登录</div>
       <el-form :rules="rules" :model="state" ref="formRefs">
         <el-form-item prop="username" label="账号">
           <el-input
@@ -67,7 +66,9 @@ export default defineComponent({
             ElMessage.success('登录成功')
             setTimeout(() => {
               router.push('/')
-              localStorage.setItem('user_info', JSON.stringify(data.message))
+              localStorage.setItem('user_id', data.message.id)
+              localStorage.setItem('user_name', data.message.username)
+              localStorage.setItem('token', data.message.token)
             }, 500)
           } catch {
             ElMessage({
@@ -96,6 +97,13 @@ export default defineComponent({
   width: 500px;
   height: 230px;
   margin: 100px auto;
+}
+.header {
+  text-align: center;
+  font-size: 28px;
+  color: $primary-color;
+  font-weight: bold;
+  margin: 20px 0;
 }
 .input {
   width: 400px;

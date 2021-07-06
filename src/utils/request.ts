@@ -1,11 +1,10 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 10:42:16
- * @LastEditTime: 2021-07-06 21:50:44
+ * @LastEditTime: 2021-07-06 22:01:18
  * @Description:
  */
 
-import router from '@/router'
 import axios from 'axios'
 /**
  *  @description 项目初始化
@@ -21,7 +20,7 @@ const instance = axios.create({
  */
 instance.interceptors.request.use(
   (config) => {
-    const token = JSON.parse(localStorage.getItem('user_info')).token
+    const token = localStorage.getItem('token')
     if (token) {
       config.headers.token = `${token}`
     }

@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 09:02:19
- * @LastEditTime: 2021-07-06 21:31:11
+ * @LastEditTime: 2021-07-06 22:08:32
  * @Description:
 -->
 
@@ -46,11 +46,7 @@
           <el-dropdown @visible-change="visibleChange">
             <span class="elexit-dropdown-link">
               <span class="username">{{ username }}</span>
-              <img
-                class="user-avatar"
-                src="https://img.bosszhipin.com/beijin/upload/avatar/20190927/3e87a7dfc893e6d475d093f902b54771c57c0bccb76782dca8b775dbbd1459d9_s.png"
-                alt=""
-              /><i :class="[iconShowTop, 'el-icon--right']"></i>
+              <i :class="[iconShowTop, 'el-icon--right']"></i>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
@@ -80,19 +76,16 @@
 </template>
 
 <script lang="ts">
-import { GlobalState } from '@/store/types'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'Header',
   setup() {
     const router = useRouter()
     const route = useRoute()
-    const store = useStore<GlobalState>()
-    const username = store.getters['user/getUser'].username || '未知用户名'
-    const isLogin = ref(true)
+    const username = localStorage.getItem('user_name')
+    const isLogin = ref(false)
     const activeIndex = route.path
     const iconShowTop = ref('el-icon-arrow-down')
     const visibleChange = (value: boolean) => {
@@ -102,11 +95,19 @@ export default defineComponent({
       console.log(key, keyPath)
     }
     const logout = () => {
-      localStorage.removeItem('user_info')
+      localStorage.removeItem('user_id')
+      localStorage.removeItem('token')
+      localStorage.removeItem('user_name')
       router.replace({
         path: '/login',
       })
     }
+    onMounted(() => {
+      const id = localStorage.getItem('user_id')
+      if (id) {
+        isLogin.value = true
+      }
+    })
     return {
       activeIndex,
       handleSelect,
