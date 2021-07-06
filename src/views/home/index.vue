@@ -33,8 +33,8 @@
     </div>
     <div class="advertisement">
       <img width="315" height="70" src="@/assets/1625548325.jpg" alt="" />
-      <img width="315" height="70" src="@/assets/1625548324.jpg" alt="" />
-      <img width="315" height="70" src="@/assets/1625548349.jpg" alt="" />
+      <img width="315" height="70" src="@/assets/1625548324.png" alt="" />
+      <img width="315" height="70" src="@/assets/1625548349.png" alt="" />
     </div>
     <div class="common-box">
       <PostCard :post="newJobsData" title="最新职位" />

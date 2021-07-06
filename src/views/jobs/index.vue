@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:44:29
- * @LastEditTime: 2021-07-05 20:59:19
+ * @LastEditTime: 2021-07-06 18:31:02
  * @Description:
 -->
 
@@ -120,6 +120,8 @@ export default defineComponent({
         getJobAllList()
       } else if (queryList.includes('salary') || queryList.includes('scale')) {
         getJobsListByScreen()
+      } else {
+        getJobAllList()
       }
     }
     /*
@@ -175,6 +177,7 @@ export default defineComponent({
         const { data } = await getAllJobsByCate(page.nowPage, page.sumPage, ka)
         jobList.value = data.message.positionVOList
       } else {
+        console.log('2')
         const { data } = await getJobList(page.nowPage, page.sumPage, value)
         jobList.value = data.message.positionVOList
         page.total = data.message.cont

@@ -1,12 +1,12 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 10:42:16
- * @LastEditTime: 2021-07-06 13:05:18
+ * @LastEditTime: 2021-07-06 21:50:44
  * @Description:
  */
 
+import router from '@/router'
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
 /**
  *  @description 项目初始化
  */
@@ -21,7 +21,7 @@ const instance = axios.create({
  */
 instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token')
+    const token = JSON.parse(localStorage.getItem('user_info')).token
     if (token) {
       config.headers.token = `${token}`
     }
@@ -43,10 +43,7 @@ instance.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       //  重定向 登录页面
     } else if (error.response.status === 500) {
-      ElMessage({
-        message: '服务器出错',
-        type: 'error',
-      })
+      // 出错
     }
 
     return Promise.reject(error)

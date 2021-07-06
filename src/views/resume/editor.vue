@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:18:59
- * @LastEditTime: 2021-07-05 22:48:05
+ * @LastEditTime: 2021-07-06 18:02:56
  * @Description:
 -->
 
@@ -242,7 +242,7 @@ import {
 import Header from '@/layout/header/index.vue'
 import { getOffsetTop, validatorEmail, validatorMobile } from '@/utils'
 import { throttle } from 'lodash-es'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { addEditResume, EditData, getProfileResumeById } from '@/api/resume'
 import { ResumeState } from '@/store/modules/resume'
@@ -253,7 +253,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
-    // const store = useStore<GlobalState>()
+    const route = useRoute()
     const selfEvaluationShow = ref(false)
     const SkillsShow = ref(false)
     const certificateShow = ref(false)
@@ -272,7 +272,6 @@ export default defineComponent({
     nextTick(() => {
       onPageScroll()
     })
-    // const profileResume = store.getters['resume/getResume'] as ResumeState
 
     const profileResume = shallowRef({} as ResumeState)
     // 此处写法不明智  实际上可以 用 vuex state 来代替
@@ -339,6 +338,7 @@ export default defineComponent({
     const rules = reactive({
       resume_info: {
         name: [{ required: true, message: '名字不能为空', trigger: 'blur' }],
+        gender: [{ required: true, message: '请选择性别', trigger: 'change' }],
         mobile_number: [
           { required: true, message: '手机号不能为空', trigger: 'blur' },
           { validator: validatorMobile, trigger: 'blur' },
@@ -417,6 +417,12 @@ export default defineComponent({
                 message: res.data.message,
                 type: 'success',
               })
+              if (route.query.redirect) {
+                setTimeout(() => {
+                  router.push(route.query.redirect as string)
+                }, 500)
+                return
+              }
               setTimeout(() => {
                 router.push('/resume')
               }, 500)

@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-17 10:54:15
- * @LastEditTime: 2021-07-06 13:45:53
+ * @LastEditTime: 2021-07-06 18:12:24
  * @Description:
 -->
 
@@ -28,6 +28,7 @@
       <div class="post-btn">
         <el-button
           round
+          :disabled="isPost"
           :type="isPost ? 'info' : 'primary'"
           @click="delivery"
           >{{ isPost ? '已投递' : '投递' }}</el-button
@@ -82,6 +83,7 @@ export default defineComponent({
   setup(props) {
     const route = useRoute()
     const router = useRouter()
+    console.log(route)
     const jobDetail = ref<JobsColumn>({} as JobsColumn)
     const companyInfo = ref<CompanyColumn>({} as CompanyColumn)
     const isPost = ref(false)
@@ -107,7 +109,7 @@ export default defineComponent({
               )
                 .then(() => {
                   setTimeout(() => {
-                    router.push('/resume/edit')
+                    router.push('/resume/edit?redirect=' + route.fullPath)
                   }, 500)
                 })
                 .catch(() => {
@@ -115,6 +117,8 @@ export default defineComponent({
                 })
               return
             }
+            ElMessage.success(data.message)
+            isPost.value = true
           } catch (err) {
             // console.log(err)
             ElMessage({

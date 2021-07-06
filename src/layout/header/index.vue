@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 09:02:19
- * @LastEditTime: 2021-07-06 13:55:56
+ * @LastEditTime: 2021-07-06 21:31:11
  * @Description:
 -->
 
@@ -102,6 +102,7 @@ export default defineComponent({
       console.log(key, keyPath)
     }
     const logout = () => {
+      localStorage.removeItem('user_info')
       router.replace({
         path: '/login',
       })
