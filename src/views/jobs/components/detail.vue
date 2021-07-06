@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-17 10:54:15
- * @LastEditTime: 2021-07-04 21:57:50
+ * @LastEditTime: 2021-07-06 13:45:53
  * @Description:
 -->
 
@@ -26,7 +26,12 @@
       </div>
 
       <div class="post-btn">
-        <el-button round type="primary" @click="delivery">投递</el-button>
+        <el-button
+          round
+          :type="isPost ? 'info' : 'primary'"
+          @click="delivery"
+          >{{ isPost ? '已投递' : '投递' }}</el-button
+        >
       </div>
     </div>
     <div class="job-sider">
@@ -65,7 +70,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { getJobDetailById } from '@/api/job'
 import { getCompanyInfoById } from '@/api/conpany'
 import { CompanyColumn, JobsColumn } from '@/store/modules/types'
-import { ElMessage } from 'element-plus'
+import { submitPost } from '@/api/resume'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default defineComponent({
   name: 'JobsDetail',
@@ -78,8 +84,51 @@ export default defineComponent({
     const router = useRouter()
     const jobDetail = ref<JobsColumn>({} as JobsColumn)
     const companyInfo = ref<CompanyColumn>({} as CompanyColumn)
+    const isPost = ref(false)
     const delivery = () => {
-      ElMessage('功能尚未开发')
+      ElMessageBox.confirm('你确定提交你的简历吗', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(async () => {
+          try {
+            const { data } = await submitPost(companyInfo.value.email)
+            console.log(data)
+            if (data.status === 500) {
+              ElMessageBox.confirm(
+                '检测到你的简历未完善,是否跳转到编辑简历页面',
+                '提示',
+                {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  type: 'warning',
+                }
+              )
+                .then(() => {
+                  setTimeout(() => {
+                    router.push('/resume/edit')
+                  }, 500)
+                })
+                .catch(() => {
+                  ElMessage('已取消操作')
+                })
+              return
+            }
+          } catch (err) {
+            // console.log(err)
+            ElMessage({
+              message: '接口错误',
+              type: 'error',
+            })
+          }
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: '取消操作',
+          })
+        })
     }
     onMounted(async () => {
       const { data } = await getJobDetailById(props.id as string)
@@ -88,6 +137,7 @@ export default defineComponent({
         props.company_id as string
       )
       companyInfo.value = data1.message.companyInformationList[0]
+      console.log(companyInfo.value)
     })
     return {
       route,
@@ -95,6 +145,7 @@ export default defineComponent({
       jobDetail,
       companyInfo,
       delivery,
+      isPost,
     }
   },
 })

@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 18:57:20
- * @LastEditTime: 2021-06-27 19:22:15
+ * @LastEditTime: 2021-07-06 13:20:52
  * @Description:
  */
 
@@ -19,6 +19,7 @@ export interface EditData {
   selfevaluation?: string
   specialty?: string
   telephone: string
+  portrait?: string
 }
 
 /**
@@ -27,6 +28,7 @@ export interface EditData {
  * @returns
  */
 export const addEditResume = (data: EditData) => {
+  console.log(data)
   return request({
     url: '/student/saveResume',
     method: 'POST',
@@ -49,6 +51,21 @@ export const getProfileResumeById = (id: string, nowPage = 1, sumPage = 1) => {
       keyWord: id,
       nowPage,
       sumPage,
+    },
+  })
+}
+
+/**
+ * 简历发送邮箱
+ * @param companyEmail
+ * @returns
+ */
+export const submitPost = (companyEmail: string) => {
+  return request({
+    url: '/student/giveResume',
+    method: 'GET',
+    params: {
+      companyEmail,
     },
   })
 }

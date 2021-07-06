@@ -1,13 +1,13 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:16:26
- * @LastEditTime: 2021-07-05 09:16:19
+ * @LastEditTime: 2021-07-05 23:01:17
  * @Description:
 -->
 
 <template>
   <Header />
-  <!-- <div class="resume-page">
+  <div class="resume-page">
     <div class="banner"></div>
     <div class="profile-header">
       <div class="profile-header__left">
@@ -84,7 +84,7 @@
       </div>
       <div class="resumeViewSection">
         <h2 class="resumeViewSection__title">荣誉证书</h2>
-        <template v-if="profileResume.certificate.length === 0">
+        <template v-if="!profileResume.certificate">
           <el-empty></el-empty>
         </template>
         <template v-else>
@@ -95,7 +95,7 @@
       </div>
       <div class="resumeViewSection">
         <h2 class="resumeViewSection__title">技能证书</h2>
-        <template v-if="profileResume.specialty.length === 0">
+        <template v-if="!profileResume.specialty">
           <el-empty></el-empty>
         </template>
         <template v-else>
@@ -116,14 +116,15 @@
         </template>
       </div>
     </div>
-  </div> -->
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, shallowRef } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import Header from '@/layout/header/index.vue'
 import { useRouter } from 'vue-router'
-import { getProfileResumeById } from '@/api/resume'
+import { EditData, getProfileResumeById } from '@/api/resume'
+import { ElMessage } from 'element-plus'
 export default defineComponent({
   name: 'Resume',
   components: {
@@ -135,21 +136,26 @@ export default defineComponent({
       router.push('/resume/edit')
     }
     const id = localStorage.getItem('user_id')
-    const profileResume = shallowRef<any>({})
+    const profileResume = ref({} as EditData & { gmtModified: string })
     const getProfileResume = async () => {
       try {
         const { data } = await getProfileResumeById(id)
         console.log(data)
-        const resume = data.message.studentResumeList[0]
+        console.log(data.message.studentResumeList)
+        console.log(data.message.studentResumeList[0])
+        const resume = data.message.studentResumeList
         console.log(resume)
-        if (resume == undefined) {
+        if (resume.length == 0) {
           edit()
         } else {
-          profileResume.value = resume
+          profileResume.value = { ...resume[0] }
           console.log(profileResume.value)
         }
-      } catch (er) {
-        console.log(er)
+      } catch {
+        ElMessage({
+          message: '接口错误',
+          type: 'error',
+        })
       }
     }
     onMounted(() => {

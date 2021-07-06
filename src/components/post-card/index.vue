@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-11 18:36:30
- * @LastEditTime: 2021-07-05 19:00:33
+ * @LastEditTime: 2021-07-05 20:50:48
  * @Description:
 -->
 
@@ -10,7 +10,11 @@
     <div class="post-title">{{ title }}</div>
     <ul class="post-list">
       <template v-for="item in post.slice(0, 6)" :key="item.id">
-        <li class="post-list-item" shadow="hover" @click="goJobById(item.id)">
+        <li
+          class="post-list-item"
+          shadow="hover"
+          @click="goJobById(item.id, item.companyId)"
+        >
           <div class="post-li">
             <a class="job_info">
               <div class="job_info--top">
@@ -56,11 +60,14 @@ export default defineComponent({
   setup(props) {
     const router = useRouter()
     console.log(props.post)
-    const goJobById = (id: string) => {
+    const goJobById = (id: string, company_id: string) => {
       router.push({
         name: 'JobsDetail',
         params: {
           id,
+        },
+        query: {
+          company_id,
         },
       })
     }

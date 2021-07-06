@@ -8,9 +8,9 @@
       "
     >
       <div class="search-container margin-auto">
-        <el-input placeholder="搜索职位" v-model="input3">
+        <el-input placeholder="搜索职位" v-model="inputValue">
           <template #append>
-            <el-button type="primary">搜索</el-button>
+            <el-button type="primary" @click="search">搜索</el-button>
           </template>
         </el-input>
       </div>
@@ -24,7 +24,7 @@
         <div class="cla-item">
           <p class="title">{{ item }}</p>
           <template v-for="cate in categoryJson[index]" :key="cate">
-            <a target="_blank" :href="`/#/jobs?ka=${cate}`">
+            <a target="_blank" :href="`#/jobs?ka=${cate}`">
               <span>{{ cate }}</span>
             </a>
           </template>
@@ -32,24 +32,9 @@
       </template>
     </div>
     <div class="advertisement">
-      <img
-        width="315"
-        height="70"
-        src="https://img01.51jobcdn.com/im/mkt/zn/bjt/pic_cg_miduoduo.jpg?1572510271"
-        alt=""
-      />
-      <img
-        width="315"
-        height="70"
-        src="https://img01.51jobcdn.com/im/mkt/zn/bjt/pic_cg_miduoduo.jpg?1572510271"
-        alt=""
-      />
-      <img
-        width="315"
-        height="70"
-        src="https://img01.51jobcdn.com/im/mkt/zn/bjt/pic_cg_miduoduo.jpg?1572510271"
-        alt=""
-      />
+      <img width="315" height="70" src="@/assets/1625548325.jpg" alt="" />
+      <img width="315" height="70" src="@/assets/1625548324.jpg" alt="" />
+      <img width="315" height="70" src="@/assets/1625548349.jpg" alt="" />
     </div>
     <div class="common-box">
       <PostCard :post="newJobsData" title="最新职位" />
@@ -70,6 +55,7 @@ import { getAllCompanyList } from '@/api/conpany'
 import { CompanyColumn, JobsColumn } from '@/store/modules/types'
 import { getNewJobs } from '@/api/job'
 import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
 export default defineComponent({
   name: 'Home',
   components: {
@@ -78,7 +64,7 @@ export default defineComponent({
     CompanyList,
   },
   setup() {
-    const input3 = ref('')
+    const inputValue = ref('')
     const state = reactive({
       cascader: [],
     })
@@ -88,9 +74,13 @@ export default defineComponent({
       ['功能测试', '后端测试', '自动化测试'],
       ['PhotoShop', '美工', 'UI设计'],
     ]
+    const router = useRouter()
 
     const handleChange = (value: unknown[]) => {
       console.log(value)
+    }
+    const search = () => {
+      router.push(`/jobs?q=${inputValue.value}`)
     }
     const newJobsData = ref([] as JobsColumn[])
     const recommendCompany = ref([] as CompanyColumn[])
@@ -111,12 +101,13 @@ export default defineComponent({
       fetchData()
     })
     return {
-      input3,
+      inputValue,
       ...toRefs(state),
       handleChange,
       newJobsData,
       recommendCompany,
       categoryJson,
+      search,
     }
   },
 })

@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 19:05:38
- * @LastEditTime: 2021-07-04 14:26:46
+ * @LastEditTime: 2021-07-05 22:43:17
  * @Description:
  */
 
@@ -23,7 +23,7 @@ const getters = {
 const mutations = {
   setToken(state: UserState, payload: string): void {
     state.token = payload
-    localStorage.setItem('TOKEN', payload)
+    // localStorage.setItem('TOKEN', payload)
   },
 }
 

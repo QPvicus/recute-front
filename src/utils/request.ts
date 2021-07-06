@@ -1,12 +1,11 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 10:42:16
- * @LastEditTime: 2021-07-05 10:12:36
+ * @LastEditTime: 2021-07-06 13:05:18
  * @Description:
  */
 
 import axios from 'axios'
-import store from '@/store'
 import { ElMessage } from 'element-plus'
 /**
  *  @description 项目初始化
@@ -22,7 +21,7 @@ const instance = axios.create({
  */
 instance.interceptors.request.use(
   (config) => {
-    const token = store.getters['user/getUser'].token
+    const token = localStorage.getItem('token')
     if (token) {
       config.headers.token = `${token}`
     }

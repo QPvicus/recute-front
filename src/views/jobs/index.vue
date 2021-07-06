@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:44:29
- * @LastEditTime: 2021-07-05 20:40:12
+ * @LastEditTime: 2021-07-05 20:59:19
  * @Description:
 -->
 
@@ -113,8 +113,6 @@ export default defineComponent({
     })
     const currentChange = (index: number) => {
       page.nowPage = index
-      console.log(route.query)
-      console.log(Object.keys(route.query))
       const queryList = Object.keys(route.query)
       if (queryList.includes('q')) {
         getJobAllList(searchValue.value)
@@ -124,6 +122,9 @@ export default defineComponent({
         getJobsListByScreen()
       }
     }
+    /*
+      重置页码
+     */
     function resetPage() {
       page.sumPage = 6
       page.nowPage = 1
@@ -155,8 +156,6 @@ export default defineComponent({
             page.nowPage,
             page.sumPage
           )
-          console.log(state.salary, state.scale, page.nowPage, page.sumPage)
-          console.log(data)
           jobList.value = data.message.positionVOList
         } catch {
           ElMessage({
@@ -168,6 +167,10 @@ export default defineComponent({
     }
     const getJobAllList = async (value?: string) => {
       const ka = route.query.ka as string
+      const q = route.query.q as string
+      if (q) {
+        value = q
+      }
       if (ka) {
         const { data } = await getAllJobsByCate(page.nowPage, page.sumPage, ka)
         jobList.value = data.message.positionVOList
@@ -175,7 +178,6 @@ export default defineComponent({
         const { data } = await getJobList(page.nowPage, page.sumPage, value)
         jobList.value = data.message.positionVOList
         page.total = data.message.cont
-        console.log(jobList.value)
       }
     }
     onMounted(() => {

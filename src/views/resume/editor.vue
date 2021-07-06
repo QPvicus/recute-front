@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:18:59
- * @LastEditTime: 2021-07-05 09:44:07
+ * @LastEditTime: 2021-07-05 22:48:05
  * @Description:
 -->
 
@@ -406,6 +406,7 @@ export default defineComponent({
             educational,
             certificate: certificate.value,
             major,
+            portrait: '',
             id,
           }
           console.log(data)
@@ -416,9 +417,9 @@ export default defineComponent({
                 message: res.data.message,
                 type: 'success',
               })
-              // setTimeout(() => {
-              //   router.push('/resume')
-              // }, 500)
+              setTimeout(() => {
+                router.push('/resume')
+              }, 500)
             })
             .catch(() => {
               ElMessage({
@@ -437,9 +438,16 @@ export default defineComponent({
     }
     // 取消 编辑
     const cancel = () => {
-      router.replace({
-        path: '/resume',
-      })
+      router
+        .replace({
+          path: '/resume',
+          query: {
+            redirect: +new Date().getTime(),
+          },
+        })
+        .then(() => {
+          console.log('1')
+        })
     }
     onMounted(async () => {
       window.addEventListener('scroll', throttle(onPageScroll, 80))

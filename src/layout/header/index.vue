@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 09:02:19
- * @LastEditTime: 2021-07-02 18:13:11
+ * @LastEditTime: 2021-07-06 13:55:56
  * @Description:
 -->
 
@@ -10,18 +10,10 @@
     <div class="wrapper header-wrapper">
       <div class="left-header">
         <div class="logo">
-          <a href="javascript:;">College Recruit</a>
+          <a href="/">
+            <img src="@/assets/logo.png" alt="" />
+          </a>
         </div>
-        <!--  <el-menu
-          :default-active="activeIndex"
-          class="el-menu-demo"
-          router
-          mode="horizontal"
-        >
-          <el-menu-item index="/index"> 首页 </el-menu-item>
-          <el-menu-item index="/jobs"> 职位 </el-menu-item>
-          <el-menu-item index="/company"> 公司 </el-menu-item>
-        </el-menu> -->
       </div>
       <ul class="right-header">
         <router-link
@@ -157,6 +149,12 @@ $primary-color: #409eff;
       line-height: 50px;
       > a {
         font-size: 16px;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        img {
+          height: 100%;
+        }
       }
     }
   }
