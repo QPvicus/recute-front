@@ -1,22 +1,29 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-09 10:50:45
- * @LastEditTime: 2021-07-09 11:23:56
+ * @LastEditTime: 2021-07-09 15:23:38
  * @Description:
 -->
 
-<template>
-  <Header />
-  <h1>企业网站</h1>
-</template>
+<template>h1ssdf</template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import Header from './header.vue'
+import { defineComponent, onBeforeMount } from 'vue'
+import { useRouter } from 'vue-router'
 export default defineComponent({
   name: 'CompIndex',
-  components: {
-    Header,
+  setup() {
+    const router = useRouter()
+    onBeforeMount(() => {
+      try {
+        const isLogin = localStorage.getItem('isLogin')
+        if (!isLogin) {
+          router.push('/')
+        }
+      } catch {
+        router.push('/')
+      }
+    })
   },
 })
 </script>

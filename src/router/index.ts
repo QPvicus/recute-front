@@ -61,12 +61,28 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/comp',
     name: 'CompIndex',
-    component: () => import('@/views/comp/index.vue'),
+    redirect: '/comp/index',
+    component: () => import('@/layout/index.vue'),
     children: [
       {
         path: '/comp/index',
         name: 'CompIndex',
         component: () => import('@/views/comp/index.vue'),
+      },
+      {
+        path: '/comp/post',
+        name: 'CompPost',
+        component: () => import('@/views/comp/post/index.vue'),
+      },
+      {
+        path: '/comp/publish',
+        name: 'CompPublish',
+        component: () => import('@/views/comp/publish/index.vue'),
+      },
+      {
+        path: '/comp/resume',
+        name: 'CompResume',
+        component: () => import('@/views/comp/resume/index.vue'),
       },
     ],
   },

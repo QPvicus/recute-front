@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-09 09:47:30
- * @LastEditTime: 2021-07-09 11:16:16
+ * @LastEditTime: 2021-07-09 15:21:29
  * @Description:
 -->
 <template>
@@ -37,9 +37,10 @@
 </template>
 
 <script lang="ts">
-import { loginPost } from '@/api/user'
+import { companyLoginPost } from '@/api/user'
+import { LoginStateContext, LoginStateProvideKey } from '@/hooks/loginState'
 import { ElMessage } from 'element-plus'
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, inject, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
@@ -55,11 +56,15 @@ export default defineComponent({
     }
     const formRefs = ref<HTMLElement>()
     const router = useRouter()
+    const loginState = inject<LoginStateContext>(LoginStateProvideKey)
     const login = () => {
       ;(formRefs.value as any).validate(async (valid: boolean) => {
         if (valid) {
           try {
-            const { data } = await loginPost(state.username, state.password)
+            const { data } = await companyLoginPost(
+              state.username,
+              state.password
+            )
             console.log(data)
             if (data.info === 'ERROR') {
               ElMessage.error(data.message)
@@ -68,9 +73,13 @@ export default defineComponent({
             ElMessage.success('登录成功')
             setTimeout(() => {
               router.push('/comp/index')
-              localStorage.setItem('user_id', data.message.id)
-              localStorage.setItem('user_name', data.message.username)
+              loginState.isLogin = true
+              loginState.isStudent = false
+              localStorage.setItem('isLogin', JSON.stringify(true))
+              localStorage.setItem('isStudent', JSON.stringify(false))
               localStorage.setItem('token', data.message.token)
+              localStorage.setItem('comp_id', data.message.id)
+              localStorage.setItem('comp_username', data.message.username)
             }, 500)
           } catch {
             ElMessage({

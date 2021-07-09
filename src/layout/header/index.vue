@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 09:02:19
- * @LastEditTime: 2021-07-09 10:01:23
+ * @LastEditTime: 2021-07-09 15:32:44
  * @Description:
 -->
 
@@ -14,10 +14,24 @@
             <img src="@/assets/logo.png" alt="" />
           </a>
         </div>
+        <template v-if="!isStudent">
+          <el-menu
+            router
+            :default-active="activeIndex"
+            class="el-menu-demo"
+            mode="horizontal"
+            @select="handleSelect"
+          >
+            <el-menu-item index="/comp/index">公司</el-menu-item>
+            <el-menu-item index="/comp/post">职位管理</el-menu-item>
+            <el-menu-item index="/comp/publish">发布职位</el-menu-item>
+            <el-menu-item index="/comp/resume">简历管理</el-menu-item>
+          </el-menu>
+        </template>
       </div>
-      <template v-if="true">
+      <template v-if="isStudent">
         <ul class="right-header">
-          <router-link
+          <!-- <router-link
             to="/comp/login"
             target="_blank"
             v-slot="{ href, isActive }"
@@ -25,7 +39,15 @@
             <li class="right-header-item" :class="{ active: isActive }">
               <a :href="href" target="_blank">我是企业用户</a>
             </li>
-          </router-link>
+          </router-link> -->
+          <el-link
+            class="comp-link"
+            href="/#/comp/login"
+            target="_blank"
+            :underline="false"
+            :disabled="isLogin && isStudent"
+            >我是企业用户</el-link
+          >
           <router-link
             custom
             to="/index"
@@ -69,7 +91,6 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item>个人信息</el-dropdown-item>
                   <el-dropdown-item @click="logout">退出</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -90,13 +111,28 @@
           </template>
         </ul>
       </template>
+      <template v-else>
+        <el-dropdown @visible-change="visibleChange">
+          <span class="elexit-dropdown-link">
+            <el-avatar src="" size="small"></el-avatar>
+            <span class="username">{{ comp_username }}</span>
+            <i :class="[iconShowTop, 'el-icon--right']"></i>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="logout1">退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </template>
     </div>
   </div>
   <div v-if="route.fullPath === '/index'" class="bg"></div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { LoginStateContext, LoginStateProvideKey } from '@/hooks/loginState'
+import { defineComponent, inject, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
@@ -105,9 +141,15 @@ export default defineComponent({
     const router = useRouter()
     const route = useRoute()
     const username = localStorage.getItem('user_name')
-    const isLogin = ref(false)
+    const comp_username = localStorage.getItem('comp_username')
     const activeIndex = route.path
     const iconShowTop = ref('el-icon-arrow-down')
+    const loginState = inject<LoginStateContext>(LoginStateProvideKey)
+    const isLogin =
+      JSON.parse(localStorage.getItem('isLogin')) ?? loginState.isLogin
+    const isStudent =
+      JSON.parse(localStorage.getItem('isStudent')) ?? loginState.isStudent
+    console.log(isLogin, 'isLogin', isStudent, 'isStudent')
     const visibleChange = (value: boolean) => {
       iconShowTop.value = value ? 'el-icon-arrow-up' : 'el-icon-arrow-down'
     }
@@ -115,19 +157,23 @@ export default defineComponent({
       console.log(key, keyPath)
     }
     const logout = () => {
-      localStorage.removeItem('user_id')
-      localStorage.removeItem('token')
-      localStorage.removeItem('user_name')
-      router.replace({
-        path: '/login',
+      router
+        .push({
+          path: '/login',
+        })
+        .then(() => {
+          localStorage.clear()
+          loginState.isLogin = false
+          loginState.isStudent = true
+        })
+    }
+    const logout1 = () => {
+      router.push('/comp/login').then(() => {
+        localStorage.clear()
+        loginState.isLogin = false
+        loginState.isStudent = true
       })
     }
-    onMounted(() => {
-      const id = localStorage.getItem('user_id')
-      if (id) {
-        isLogin.value = true
-      }
-    })
     return {
       activeIndex,
       handleSelect,
@@ -135,9 +181,13 @@ export default defineComponent({
       iconShowTop,
       visibleChange,
       logout,
-      isLogin,
       route,
       username,
+      logout1,
+      loginState,
+      comp_username,
+      isLogin,
+      isStudent,
     }
   },
 })
@@ -163,12 +213,12 @@ $primary-color: #409eff;
   .left-header {
     display: flex;
     align-items: center;
-
     .logo {
       display: block;
       width: 120px;
       height: 50px;
       line-height: 50px;
+      margin-right: 30px;
       > a {
         font-size: 16px;
         display: flex;
@@ -197,30 +247,30 @@ $primary-color: #409eff;
     }
   }
 }
+.comp-link {
+  font-size: 12px;
+  &:hover {
+    color: $primary-color;
+  }
+}
 .el-menu-item {
   height: 50px;
   line-height: 50px;
 }
 
-.user-avatar {
-  width: 26px;
-  height: 26px;
-  border-radius: 100%;
+.elexit-dropdown-link {
   vertical-align: middle;
-  margin-left: 3px;
-  margin-right: 3px;
-}
-.username {
-  vertical-align: middle;
-}
-
-.el-dropdown-link {
   cursor: pointer;
 }
+
 .icon-transition {
   transition: all 0.3s;
 }
 :deep(.el-dropdown) {
   margin-top: 1px;
+}
+:deep(.el-avatar) {
+  vertical-align: middle;
+  margin-right: 15px;
 }
 </style>

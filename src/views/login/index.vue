@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 11:25:54
- * @LastEditTime: 2021-07-06 22:13:50
+ * @LastEditTime: 2021-07-09 15:07:23
  * @Description:
 -->
 
@@ -36,8 +36,9 @@
 
 <script lang="ts">
 import { loginPost } from '@/api/user'
+import { LoginStateContext, LoginStateProvideKey } from '@/hooks/loginState'
 import { ElMessage } from 'element-plus'
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, inject, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
@@ -53,6 +54,7 @@ export default defineComponent({
     }
     const formRefs = ref<HTMLElement>()
     const router = useRouter()
+    const loginState = inject<LoginStateContext>(LoginStateProvideKey)
     const login = () => {
       ;(formRefs.value as any).validate(async (valid: boolean) => {
         if (valid) {
@@ -66,6 +68,10 @@ export default defineComponent({
             ElMessage.success('登录成功')
             setTimeout(() => {
               router.push('/')
+              loginState.isLogin = true
+              loginState.isStudent = true
+              localStorage.setItem('isLogin', JSON.stringify(true))
+              localStorage.setItem('isStudent', JSON.stringify(true))
               localStorage.setItem('user_id', data.message.id)
               localStorage.setItem('user_name', data.message.username)
               localStorage.setItem('token', data.message.token)
