@@ -59,6 +59,28 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/resume/editor.vue'),
   },
   {
+    path: '/comp',
+    name: 'CompIndex',
+    component: () => import('@/views/comp/index.vue'),
+    children: [
+      {
+        path: '/comp/index',
+        name: 'CompIndex',
+        component: () => import('@/views/comp/index.vue'),
+      },
+    ],
+  },
+  {
+    path: '/comp/login',
+    name: 'CompLogin',
+    component: () => import('@/views/comp/login/index.vue'),
+  },
+  {
+    path: '/comp/register',
+    name: 'CompRegister',
+    component: () => import('@/views/comp/login/register.vue'),
+  },
+  {
     path: '/test',
     name: 'Test',
     component: () => import('@/views/error/test.vue'),

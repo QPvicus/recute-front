@@ -2915,9 +2915,9 @@ csstype@^2.6.8:
   integrity sha1-TPMOuH4dGgBdi2UQ+VKSQT9qHA4=
 
 dayjs@1.x:
-  version "1.10.5"
-  resolved "https://registry.nlark.com/dayjs/download/dayjs-1.10.5.tgz?cache=0&sync_timestamp=1622012271727&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdayjs%2Fdownload%2Fdayjs-1.10.5.tgz#5600df4548fc2453b3f163ebb2abbe965ccfb986"
-  integrity sha1-VgDfRUj8JFOz8WPrsqu+llzPuYY=
+  version "1.10.6"
+  resolved "https://registry.nlark.com/dayjs/download/dayjs-1.10.6.tgz?cache=0&sync_timestamp=1625557417200&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdayjs%2Fdownload%2Fdayjs-1.10.6.tgz#288b2aa82f2d8418a6c9d4df5898c0737ad02a63"
+  integrity sha1-KIsqqC8thBimydTfWJjAc3rQKmM=
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
   version "2.6.9"
@@ -3175,10 +3175,10 @@ electron-to-chromium@^1.3.723:
   resolved "https://registry.nlark.com/electron-to-chromium/download/electron-to-chromium-1.3.762.tgz#3fa4e3bcbda539b50e3aa23041627063a5cffe61"
   integrity sha1-P6TjvL2lObUOOqIwQWJwY6XP/mE=
 
-element-plus@^1.0.2-beta.46:
-  version "1.0.2-beta.53"
-  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.53.tgz#52208eccce487f452ffc5de8722cb718d6e02953"
-  integrity sha1-UiCOzM5If0Uv/F3ociy3GNbgKVM=
+element-plus@^1.0.2-beta.54:
+  version "1.0.2-beta.54"
+  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.54.tgz?cache=0&sync_timestamp=1625208049455&other_urls=https%3A%2F%2Fregistry.nlark.com%2Felement-plus%2Fdownload%2Felement-plus-1.0.2-beta.54.tgz#70eda3fc0ef4c28a1cdc6bffec8f9c34ef83cc16"
+  integrity sha1-cO2j/A70wooc3Gv/7I+cNO+DzBY=
   dependencies:
     "@popperjs/core" "^2.4.4"
     "@types/lodash" "^4.14.161"
