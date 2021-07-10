@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-09 09:47:30
- * @LastEditTime: 2021-07-09 15:21:29
+ * @LastEditTime: 2021-07-10 10:28:20
  * @Description:
 -->
 <template>
@@ -72,7 +72,7 @@ export default defineComponent({
             }
             ElMessage.success('登录成功')
             setTimeout(() => {
-              router.push('/comp/index')
+              router.push('/index')
               loginState.isLogin = true
               loginState.isStudent = false
               localStorage.setItem('isLogin', JSON.stringify(true))

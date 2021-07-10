@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 09:02:19
- * @LastEditTime: 2021-07-09 15:32:44
+ * @LastEditTime: 2021-07-10 10:00:17
  * @Description:
 -->
 
@@ -22,24 +22,17 @@
             mode="horizontal"
             @select="handleSelect"
           >
-            <el-menu-item index="/comp/index">公司</el-menu-item>
-            <el-menu-item index="/comp/post">职位管理</el-menu-item>
+            <el-menu-item index="/index">首页</el-menu-item>
             <el-menu-item index="/comp/publish">发布职位</el-menu-item>
-            <el-menu-item index="/comp/resume">简历管理</el-menu-item>
+            <!-- <el-menu-item index="/comp/post">职位管理</el-menu-item>
+            <el-menu-item index="/comp/publish">发布职位</el-menu-item>
+            <el-menu-item index="/comp/resume">简历管理</el-menu-item> -->
+            <el-menu-item index="/comp/profile">个人中心</el-menu-item>
           </el-menu>
         </template>
       </div>
       <template v-if="isStudent">
         <ul class="right-header">
-          <!-- <router-link
-            to="/comp/login"
-            target="_blank"
-            v-slot="{ href, isActive }"
-          >
-            <li class="right-header-item" :class="{ active: isActive }">
-              <a :href="href" target="_blank">我是企业用户</a>
-            </li>
-          </router-link> -->
           <el-link
             class="comp-link"
             href="/#/comp/login"

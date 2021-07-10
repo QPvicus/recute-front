@@ -84,6 +84,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'CompResume',
         component: () => import('@/views/comp/resume/index.vue'),
       },
+      {
+        path: '/comp/profile',
+        name: 'CompProfile',
+        component: () => import('@/views/comp/profile/index.vue'),
+      },
     ],
   },
   {
@@ -127,11 +132,18 @@ const router = createRouter({
   },
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (to.path === '/index') {
-//     //
-//   }
-//   next()
-// })
+router.beforeEach((to, from, next) => {
+  if (to.name === 'CompProfile' || to.name === '/comp/index') {
+    try {
+      const isLogin = JSON.parse(localStorage.getItem('isLogin'))
+      if (!isLogin) {
+        next({ name: 'Home' })
+      }
+    } catch {
+      next({ name: 'Home' })
+    }
+  }
+  next()
+})
 
 export default router

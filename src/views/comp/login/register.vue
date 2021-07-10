@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-09 09:47:42
- * @LastEditTime: 2021-07-09 10:38:17
+ * @LastEditTime: 2021-07-10 10:21:38
  * @Description:
 -->
 
@@ -79,7 +79,7 @@ export default defineComponent({
     const form = reactive<UserData>({
       username: '',
       password: '',
-      role: '0',
+      role: '1',
       email: '',
       telephone: '',
       code: '',
