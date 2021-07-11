@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-09 21:56:30
- * @LastEditTime: 2021-07-10 09:46:03
+ * @LastEditTime: 2021-07-11 22:48:11
  * @Description:
  */
 
@@ -48,6 +48,8 @@ import {
   ElTable,
   ElTableColumn,
   ElPopover,
+  ElUpload,
+  ElImage,
 } from 'element-plus'
 
 const components = [
@@ -89,6 +91,8 @@ const components = [
   ElTable,
   ElTableColumn,
   ElPopover,
+  ElUpload,
+  ElImage,
 ]
 const plugins = [ElMessage, ElNotification]
 function RegisterComponent(app: App) {

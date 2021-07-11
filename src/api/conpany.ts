@@ -1,10 +1,11 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-07-01 10:10:29
- * @LastEditTime: 2021-07-05 18:42:04
+ * @LastEditTime: 2021-07-11 21:40:12
  * @Description:
  */
 
+import { CompanyColumn } from '@/store/modules/types'
 import request from '@/utils/request'
 
 /**
@@ -68,5 +69,18 @@ export const getAllCompanyBySearch = (
       nowPage,
       sumPage,
     },
+  })
+}
+
+/**
+ *  公司信息保存
+ * @param data
+ * @returns
+ */
+export const saveCompanyInfo = (data: CompanyColumn) => {
+  return request({
+    url: '/company/saveInformation',
+    method: 'POST',
+    data,
   })
 }
