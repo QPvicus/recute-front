@@ -1,46 +1,29 @@
 <template>
-  <el-select v-model="value" placeholder="请选择">
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value"
-    >
-    </el-option>
-  </el-select>
+  <div style="margin: 100px">
+    <el-popover placement="top" :width="160" v-model:visible="visible">
+      <p>这是一段内容这是一段内容确定删除吗？</p>
+      <div style="text-align: right; margin: 0">
+        <el-button size="mini" type="text" @click="visible = false"
+          >取消</el-button
+        >
+        <el-button type="primary" size="mini" @click="visible = false"
+          >确定</el-button
+        >
+      </div>
+      <template #reference>
+        <el-button @click="visible = true">删除</el-button>
+      </template>
+    </el-popover>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   setup() {
-    const options = [
-      {
-        value: '选项1',
-        label: '黄金糕',
-      },
-      {
-        value: '选项2',
-        label: '双皮奶',
-      },
-      {
-        value: '选项3',
-        label: '蚵仔煎',
-      },
-      {
-        value: '选项4',
-        label: '龙须面',
-      },
-      {
-        value: '选项5',
-        label: '北京烤鸭',
-      },
-    ]
-    const value = ''
     return {
-      options,
-      value,
+      visible: ref(false),
     }
   },
 })

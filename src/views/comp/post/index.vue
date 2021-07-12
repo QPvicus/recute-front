@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-09 13:33:02
- * @LastEditTime: 2021-07-10 10:51:39
+ * @LastEditTime: 2021-07-12 16:02:18
  * @Description:
 -->
 
@@ -54,16 +54,28 @@
         <el-button size="mini" @click="handleEdit(scope.row.id)"
           >编辑</el-button
         >
-        <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)"
-          >删除</el-button
+
+        <el-popconfirm
+          placement="top"
+          confirmButtonText="确认"
+          cancelButtonText="取消"
+          icon="el-icon-info"
+          iconColor="red"
+          title="确定删除吗?"
+          @confirm="handleDelete(scope.row.id)"
         >
+          <template #default> aa </template>
+          <template #reference>
+            <el-button type="danger" size="mini">删除</el-button>
+          </template>
+        </el-popconfirm>
       </template>
     </el-table-column>
   </el-table>
 </template>
 
 <script lang="ts">
-import { getAllJobsByCompanyId } from '@/api/job'
+import { deleteJob, getAllJobsByCompanyId } from '@/api/job'
 import { ElMessage } from 'element-plus'
 import { defineComponent, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -73,14 +85,26 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const tableData = ref([])
+    const visible = ref(false)
     const publishPost = () => {
       router.push('/comp/publish')
     }
     const handleEdit = (index: number) => {
-      console.log(index)
+      // console.log(index)
+      router
+        .replace({ name: 'CompPublish', query: { job_id: index } })
+        .then(() => {
+          location.reload()
+        })
     }
-    const handleDelete = (index: number) => {
-      console.log(index)
+    const handleDelete = async (id: string) => {
+      try {
+        const { data } = await deleteJob(id)
+        ElMessage.success(data.message)
+        location.reload()
+      } catch {
+        ElMessage.error('接口错误')
+      }
     }
     const fetchData = async () => {
       const id = localStorage.getItem('comp_id')
@@ -100,6 +124,7 @@ export default defineComponent({
       handleEdit,
       handleDelete,
       publishPost,
+      visible,
     }
   },
 })

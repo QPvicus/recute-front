@@ -98,3 +98,57 @@ export const getAllJobsByCate = (
     },
   })
 }
+
+export interface JobColumn {
+  classify: string
+  company: string
+  demand: string
+  education: string
+  information: string
+  people: string
+  positionName: string
+  remuneration: string
+  safeguard: string
+  id?: string
+}
+
+/**
+ *  发布职位
+ * @param data
+ * @returns
+ */
+export const saveJob = (data: JobColumn) => {
+  return request({
+    url: '/company/savePosition',
+    method: 'POST',
+    data,
+  })
+}
+
+/**
+ *  更新职位信息
+ * @param data
+ * @returns
+ */
+export const updateJob = (data: JobColumn) => {
+  return request({
+    url: '/company/updatePosition',
+    method: 'POST',
+    data,
+  })
+}
+
+/**
+ *  公司职位删除
+ * @param id
+ * @returns
+ */
+export const deleteJob = (id: string) => {
+  return request({
+    url: '/company/deletePosition',
+    method: 'POST',
+    params: {
+      id,
+    },
+  })
+}
