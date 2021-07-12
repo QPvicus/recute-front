@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-11 20:51:04
- * @LastEditTime: 2021-07-11 22:59:41
+ * @LastEditTime: 2021-07-12 08:47:48
  * @Description:
 -->
 
@@ -53,7 +53,7 @@
           :key="tag"
           v-for="tag in compState.companytype.split(',')"
           style="margin-right: 15px"
-          closable
+          :closable="!isFormDisabled"
           :disable-transitions="false"
           @close="handleClose(tag)"
         >
@@ -68,7 +68,7 @@
           style="width: 100px"
           class="input-new-tag"
           v-if="inputVisible"
-          v-model="inputValue"
+          v-model.trim="inputValue"
           ref="saveTagInput"
           size="small"
           @keyup.enter="handleInputConfirm"
@@ -87,10 +87,16 @@
         </el-col>
       </el-row>
     </el-form-item>
+    <el-form-item label="公司邮箱">
+      <el-row>
+        <el-col :span="6">
+          <el-input v-model="compState.email"></el-input>
+        </el-col>
+      </el-row>
+    </el-form-item>
     <el-form-item label="公司规模">
       <el-select v-model="compState.scale" clearable placeholder="请选择">
         <el-option
-          disabled
           v-for="item in options"
           :key="item.value"
           :label="item.label"
@@ -119,8 +125,11 @@
 </template>
 
 <script lang="ts">
+import { getCompanyInfoById, saveCompanyInfo } from '@/api/conpany'
+import { CompanyColumn } from '@/store/modules/types'
 import { ElMessage } from 'element-plus'
-import { defineComponent, nextTick, reactive, ref } from 'vue'
+import { defineComponent, nextTick, onMounted, reactive, ref, toRaw } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   naem: 'CompInfo',
@@ -129,6 +138,7 @@ export default defineComponent({
       company: '',
       companytype: '',
       telephone: '',
+      email: '',
       icon: '',
       scale: '',
       synopsis: '',
@@ -145,6 +155,31 @@ export default defineComponent({
     const inputValue = ref('')
     const saveTagInput = ref<HTMLElement>()
     const isFormDisabled = ref(true)
+    const router = useRouter()
+
+    // 获取公司信息
+    const fetchCompanyInfo = async () => {
+      const comp_id = localStorage.getItem('comp_id')
+      try {
+        const { data } = await getCompanyInfoById(comp_id)
+        console.log(data)
+        const companyInfo = data.message
+          .companyInformationList[0] as CompanyColumn
+        if (!companyInfo) {
+          return
+        } else {
+          compState.company = companyInfo.company
+          compState.companytype = companyInfo.companytype
+          compState.icon = companyInfo.icon
+          compState.email = companyInfo.email
+          compState.scale = companyInfo.scale
+          compState.synopsis = companyInfo.synopsis
+          compState.telephone = companyInfo.telephone
+        }
+      } catch {
+        ElMessage.error('接口错误')
+      }
+    }
 
     // 上传
     const handleAvatarSuccess = (res: any, file: any) => {
@@ -161,8 +196,10 @@ export default defineComponent({
       return isJPEG || isPNG
     }
     //  tags
-    const handleClose = (tag: any) => {
-      dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
+    const handleClose = (tag: string) => {
+      const arr = compState.companytype.split(',')
+      const newArr = arr.filter((s) => s !== tag)
+      compState.companytype = newArr.join(',')
     }
     const showInput = () => {
       inputVisible.value = true
@@ -173,7 +210,11 @@ export default defineComponent({
 
     const handleInputConfirm = () => {
       if (inputValue.value) {
-        dynamicTags.value.push(inputValue.value)
+        if (!compState.companytype) {
+          compState.companytype = inputValue.value
+        } else {
+          compState.companytype += `,${inputValue.value}`
+        }
       }
       inputVisible.value = false
       inputValue.value = ''
@@ -181,7 +222,10 @@ export default defineComponent({
 
     //  cancel
     const onCancel = () => {
-      isFormDisabled.value = true
+      // router.replace({ name: 'CompProfile' }).then(() => {
+      //   isFormDisabled.value = true
+      // })
+      location.reload()
       //  做善后工作 清楚编辑过的地方
     }
 
@@ -191,9 +235,20 @@ export default defineComponent({
         isFormDisabled.value = !isFormDisabled.value
       } else {
         console.log('save')
-        isFormDisabled.value = !isFormDisabled.value
+        saveCompanyInfo(toRaw(compState) as CompanyColumn)
+          .then((res) => {
+            console.log(res)
+            ElMessage.success(res.data.message)
+            router.replace({ name: 'CompProfile' })
+          })
+          .catch(() => {
+            ElMessage.error('接口错误')
+          })
       }
     }
+    onMounted(() => {
+      fetchCompanyInfo()
+    })
     return {
       compState,
       onEdit,

@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-12 17:50:35
- * @LastEditTime: 2021-07-03 20:03:38
+ * @LastEditTime: 2021-07-12 07:59:09
  * @Description:
  */
 
@@ -55,4 +55,10 @@ export function getOffsetTop(
  */
 export function stringToArr(info: string) {
   return info.split('#')
+}
+
+export function getCharCount(str: string, char: string) {
+  const reg = new RegExp(char, 'g')
+  const result = str.match(reg)
+  return !result ? 0 : result.length
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 09:02:19
- * @LastEditTime: 2021-07-10 10:00:17
+ * @LastEditTime: 2021-07-12 07:43:56
  * @Description:
 -->
 
@@ -105,7 +105,11 @@
         </ul>
       </template>
       <template v-else>
-        <el-dropdown @visible-change="visibleChange">
+        <div class="comp_user">
+          {{ comp_username }}
+          <span @click="logout1">退出登录</span>
+        </div>
+        <!-- <el-dropdown @visible-change="visibleChange">
           <span class="elexit-dropdown-link">
             <el-avatar src="" size="small"></el-avatar>
             <span class="username">{{ comp_username }}</span>
@@ -116,7 +120,7 @@
               <el-dropdown-item @click="logout1">退出</el-dropdown-item>
             </el-dropdown-menu>
           </template>
-        </el-dropdown>
+        </el-dropdown> -->
       </template>
     </div>
   </div>
@@ -258,6 +262,13 @@ $primary-color: #409eff;
 
 .icon-transition {
   transition: all 0.3s;
+}
+.comp_user {
+  font-size: 14px;
+  span {
+    margin-left: 10px;
+    cursor: pointer;
+  }
 }
 :deep(.el-dropdown) {
   margin-top: 1px;
