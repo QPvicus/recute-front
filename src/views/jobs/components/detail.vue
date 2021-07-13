@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-17 10:54:15
- * @LastEditTime: 2021-07-06 18:12:24
+ * @LastEditTime: 2021-07-13 13:07:16
  * @Description:
 -->
 
@@ -95,7 +95,10 @@ export default defineComponent({
       })
         .then(async () => {
           try {
-            const { data } = await submitPost(companyInfo.value.email)
+            const { data } = await submitPost(
+              companyInfo.value.email,
+              props.company_id as string
+            )
             console.log(data)
             if (data.status === 500) {
               ElMessageBox.confirm(

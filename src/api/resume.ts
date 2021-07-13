@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-06-22 18:57:20
- * @LastEditTime: 2021-07-06 13:20:52
+ * @LastEditTime: 2021-07-13 13:53:24
  * @Description:
  */
 
@@ -60,12 +60,13 @@ export const getProfileResumeById = (id: string, nowPage = 1, sumPage = 1) => {
  * @param companyEmail
  * @returns
  */
-export const submitPost = (companyEmail: string) => {
+export const submitPost = (companyEmail: string, companyId: string) => {
   return request({
     url: '/student/giveResume',
     method: 'GET',
     params: {
       companyEmail,
+      companyId,
     },
   })
 }

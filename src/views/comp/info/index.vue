@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-07-11 20:51:04
- * @LastEditTime: 2021-07-12 08:47:48
+ * @LastEditTime: 2021-07-12 20:08:05
  * @Description:
 -->
 
@@ -239,7 +239,9 @@ export default defineComponent({
           .then((res) => {
             console.log(res)
             ElMessage.success(res.data.message)
-            router.replace({ name: 'CompProfile' })
+            router.replace({ name: 'CompProfile' }).then(() => {
+              location.reload()
+            })
           })
           .catch(() => {
             ElMessage.error('接口错误')

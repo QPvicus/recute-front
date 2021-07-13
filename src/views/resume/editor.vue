@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:18:59
- * @LastEditTime: 2021-07-06 23:09:58
+ * @LastEditTime: 2021-07-13 14:27:52
  * @Description:
 -->
 
@@ -11,6 +11,26 @@
     <div class="resume-header">
       <h1>编辑简历</h1>
     </div>
+    <!-- 上传头像 -->
+    <div class="resumeSection">
+      <div class="resumeSection__left">
+        <h2 class="resumeSection_title">上传头像</h2>
+      </div>
+      <div class="resumeSection__right">
+        <el-upload
+          class="avatar-uploader"
+          action="http://47.98.44.98:5253/Recruit/photo/upLoadPhoto"
+          name="fileUpload"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+        >
+          <img v-if="portrait" :src="portrait" class="avatar-img" />
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </div>
+    </div>
+    <!-- 上传头像 -->
     <!-- 基本信息 -->
     <div class="resumeSection">
       <div class="resumeSection__left">
@@ -259,6 +279,7 @@ export default defineComponent({
     const certificateShow = ref(false)
     const footerActionFixed = ref(false)
     const footerAction = ref<HTMLLIElement>()
+    const isFormDisabled = ref(true)
 
     // div 元素 吸附 计算
     const footerActionFixedShouleThres = computed(() => {
@@ -320,6 +341,7 @@ export default defineComponent({
       resume_skill: '',
       resume_certificate: '',
       resume_self: '',
+      portrait: '',
     })
     const education = [
       {
@@ -385,6 +407,7 @@ export default defineComponent({
             resume_edu,
             resume_self: selfevaluation,
             resume_certificate: certificate,
+            portrait,
           } = toRefs(state)
           const {
             name,
@@ -406,7 +429,7 @@ export default defineComponent({
             educational,
             certificate: certificate.value,
             major,
-            portrait: '',
+            portrait: portrait.value,
             id,
           }
           console.log(data)
@@ -455,6 +478,19 @@ export default defineComponent({
           console.log('1')
         })
     }
+    const handleAvatarSuccess = (res: any, file: any) => {
+      console.log('res success', res, file)
+      state.portrait = res.message
+    }
+    const beforeAvatarUpload = (file: File) => {
+      const isJPEG = file.type === 'image/jpeg'
+      const isPNG = file.type === 'image/png'
+      console.log(isJPEG, isPNG)
+      if (!isJPEG && !isPNG) {
+        ElMessage.error('上传的图片只能是JPG/PNG格式')
+      }
+      return isJPEG || isPNG
+    }
     onMounted(async () => {
       window.addEventListener('scroll', throttle(onPageScroll, 80))
       // getProfileResume()
@@ -488,6 +524,9 @@ export default defineComponent({
       handleClick,
       cancel,
       profileResume,
+      isFormDisabled,
+      handleAvatarSuccess,
+      beforeAvatarUpload,
     }
   },
 })
@@ -580,5 +619,23 @@ body {
   height: 300px;
   /* background-color: rgba($color: #000000, $alpha: 0.5); */
   margin-top: 20px;
+}
+
+.avatar-uploader {
+  font-size: 28px;
+  color: #8c939d;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dotted #ccc;
+}
+.image-slot {
+  font-size: 30px;
+}
+.avatar-img {
+  width: 206px;
+  height: 218px;
 }
 </style>

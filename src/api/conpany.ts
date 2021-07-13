@@ -1,7 +1,7 @@
 /*
  * @Author: Taylor Swift
  * @Date: 2021-07-01 10:10:29
- * @LastEditTime: 2021-07-12 14:18:08
+ * @LastEditTime: 2021-07-13 13:10:02
  * @Description:
  */
 
@@ -82,5 +82,20 @@ export const saveCompanyInfo = (data: CompanyColumn) => {
     url: '/company/saveInformation',
     method: 'POST',
     data,
+  })
+}
+
+/**
+ *  查看已投递的简历
+ * @param companyId
+ * @returns
+ */
+export const getResumeByCompany = (companyId: string) => {
+  return request({
+    url: '/show/getResumeShowPage',
+    method: 'POST',
+    params: {
+      companyId,
+    },
   })
 }

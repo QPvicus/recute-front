@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-10 09:02:19
- * @LastEditTime: 2021-07-12 07:43:56
+ * @LastEditTime: 2021-07-12 16:25:32
  * @Description:
 -->
 
@@ -24,9 +24,6 @@
           >
             <el-menu-item index="/index">首页</el-menu-item>
             <el-menu-item index="/comp/publish">发布职位</el-menu-item>
-            <!-- <el-menu-item index="/comp/post">职位管理</el-menu-item>
-            <el-menu-item index="/comp/publish">发布职位</el-menu-item>
-            <el-menu-item index="/comp/resume">简历管理</el-menu-item> -->
             <el-menu-item index="/comp/profile">个人中心</el-menu-item>
           </el-menu>
         </template>
@@ -35,7 +32,7 @@
         <ul class="right-header">
           <el-link
             class="comp-link"
-            href="/#/comp/login"
+            href="#/comp/login"
             target="_blank"
             :underline="false"
             :disabled="isLogin && isStudent"
@@ -109,18 +106,6 @@
           {{ comp_username }}
           <span @click="logout1">退出登录</span>
         </div>
-        <!-- <el-dropdown @visible-change="visibleChange">
-          <span class="elexit-dropdown-link">
-            <el-avatar src="" size="small"></el-avatar>
-            <span class="username">{{ comp_username }}</span>
-            <i :class="[iconShowTop, 'el-icon--right']"></i>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item @click="logout1">退出</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown> -->
       </template>
     </div>
   </div>

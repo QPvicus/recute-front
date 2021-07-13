@@ -1,7 +1,7 @@
 <!--
  * @Author: Taylor Swift
  * @Date: 2021-06-12 12:16:26
- * @LastEditTime: 2021-07-05 23:01:17
+ * @LastEditTime: 2021-07-13 15:08:42
  * @Description:
 -->
 
@@ -29,7 +29,7 @@
         </el-button>
       </div>
     </div>
-    <div class="resume-form">
+    <!-- <div class="resume-form">
       <div class="resumeViewSection">
         <h2 class="resumeViewSection__title">基本信息</h2>
 
@@ -115,13 +115,16 @@
           </div>
         </template>
       </div>
-    </div>
+    </div> -->
+
+    <ResumeContainer style="width: 1016px" :profileResume="profileResume" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import Header from '@/layout/header/index.vue'
+import ResumeContainer from '@/components/resume-comp/index.vue'
 import { useRouter } from 'vue-router'
 import { EditData, getProfileResumeById } from '@/api/resume'
 import { ElMessage } from 'element-plus'
@@ -129,6 +132,7 @@ export default defineComponent({
   name: 'Resume',
   components: {
     Header,
+    ResumeContainer,
   },
   setup() {
     const router = useRouter()
